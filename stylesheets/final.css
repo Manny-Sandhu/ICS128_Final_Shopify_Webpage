@@ -1,0 +1,5 @@
+#products img{
+    aspect-ratio: 1/1;
+    object-fit: scale-down;
+    width: 100%;
+}
