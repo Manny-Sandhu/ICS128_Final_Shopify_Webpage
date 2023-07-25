@@ -3,3 +3,21 @@
     object-fit: scale-down;
     width: 100%;
 }
+
+#cart-items{
+    list-style: none;
+    padding-inline-start: 0px;
+    
+}
+
+#cart-items img{
+    aspect-ratio: 1/1;
+    object-fit: scale-down;
+    width: 80%;
+}
+
+#cart-items .card-body{
+    padding: 0px;
+}
+
+.modal-backdrop { --bs-backdrop-zindex: none; } /* makes the model clickable when the offcanvas is open */
