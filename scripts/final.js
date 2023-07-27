@@ -12,10 +12,10 @@ $(document).ready(function(){
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
                             <div class="offcanvas-body">
-                                <select class="form-select" aria-label="cartSelect">
-                                    <option value="1" selected>One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select id="currency-type" class="form-select" aria-label="cartSelect">
+                                    <option value="cad" selected>Canadian Dollar</option>
+                                    <option value="usd">US Dollar</option>
+                                    <option value="gbp">British Pound</option>
                                 </select>
                                 <table id="cart-items" class="table border-0"></table>
                                 <div id="cart_buttons" class="d-flex flex-row">
@@ -51,23 +51,26 @@ $(document).ready(function(){
     $('#clear').hide(); 
     $('#checkout').hide();
 
+
     // function for creating cards used in the fetch call //
     function createCard(prod){
+        $('#products').html('');
         for(let i = 0; i<prod.length; i++){
             $('#products').append(
-                                `<div class="cart-div card ms-3 me-3 mt-2 mb-2">
-                                    <img src="${prod[i].image}" class="card-img-top" alt="${prod[i].title}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${prod[i].title}</h5>
-                                        <p class="card-text">${prod[i].description}</p>
-                                    </div>
-                                    <div class="card-footer d-flex flex-row border-0 bg-transparent">
-                                        <h5 class="card-title me-auto">${"$" + prod[i].price}</h5>
-                                        <a id="${prod[i].id}" class="cart-btn btn btn-primary ms-auto">Add to Cart</a>
-                                    </div>
-                                </div>`);
+                `<div class="cart-div card ms-3 me-3 mt-2 mb-2">
+                    <img src="${prod[i].image}" class="card-img-top" alt="${prod[i].title}">
+                    <div class="card-body">
+                        <h5 class="card-title">${prod[i].title}</h5>
+                        <p class="card-text">${prod[i].description}</p>
+                    </div>
+                    <div class="card-footer d-flex flex-row border-0 bg-transparent">
+                        <h5 id="${prod[i].id}-price" class="card-title me-auto price">${"$" + prod[i].price}</h5>
+                        <a id="${prod[i].id}" class="cart-btn btn btn-primary ms-auto">Add to Cart</a>
+                    </div>
+                </div>`);
         }
     }
+
 
     // function for creating a list of catalog items that is placed in the items global //
     function createItems(items){
@@ -79,51 +82,33 @@ $(document).ready(function(){
         return itemList;
     }
 
+
     // Function for settin the cart-items div //
-    function setCart(cart){
-        console.log(cart);
+    function setCartList(cart){
         let j = 1;
-        let text = "";
         let cart_list = [];
+
         for (let i = 0; i < items.length; i++){
             let item = items[i];
             if(cart[j] != undefined){
                 cart_list.push(item);
-                console.log(item);      // remove this before handing in the project
             }
             j++;
         }
+        return cart_list;
+    }
+    function setCartTable(cart_list, cart, exchange){
         let table = document.querySelector("#cart-items");
+        
         table.innerHTML =`<tr>
-                            <td></td>
-                            <td>Item</td>
-                            <td>Quantity</td>
-                            <td>Price</td>
-                            <td>Total</td>
+                            <th></td>
+                            <th>Item</td>
+                            <th>Quantity</td>
+                            <th>Price</td>
+                            <th>Total</td>
                           </tr>`;
-        for(let i = 0; i<cart_list.length; i++){
-            // text += `
-            //         <li>
-            //             <div class="card border-0">
-            //                 <div class="d-flex flex-row col justify-content-center align-items-center">
-            //                     <div class="col-1">
-            //                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-            //                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-            //                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-            //                     </svg>
-            //                     </div>
-            //                     <div class="col-11 d-flex">
-            //                         <div class="card-body d-flex flex-row justify-content-center text-center">
-            //                             <h5 class="card-title col-8 fs-6">${cart_list[i].title}</h5>
-            //                             <p class="card-text col-2 fs-6 mt-1">${cart[cart_list[i].id]}</p>
-            //                             <p class="card-text col-2 fs-6 mt-1">${cart_list[i].price}</p>
-            //                             <p class="card-text col-2 fs-6 mt-1">${cart_list[i].price}</p>
-            //                         </div>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </li>`
-            //         $('#cart-items').html(text);
+
+        for(let i = 0; i < cart_list.length; i++){
 
             let row = table.insertRow(-1);
             row.setAttribute("id", cart_list[i].id + "-cart");
@@ -138,24 +123,108 @@ $(document).ready(function(){
                                 </svg>`
             cell2.innerHTML = cart_list[i].title;
             cell3.innerHTML = cart[cart_list[i].id];
-            cell4.innerHTML = cart_list[i].price;
-            cell5.innerHTML = cart_list[i].price * cart[cart_list[i].id];
+            test = cart[cart_list[i].id];
+            cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
+            cell5.innerHTML = parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange).toFixed(2);
         }
-        console.log(text);      // remove this before handing in the project
-        //$('#cart-items').html(text);
+    }
+
+    async function setCart(cart){
+        let cart_list = setCartList(cart);
+
+        let exchange = await setPrice();
+
+        setCartTable(cart_list, cart, exchange);
+
         $('#clear').show(); 
         $('#checkout').show();
     }
 
+    function changePrice(rate){
+        let currency = $('#currency-type').val();
+        if(currency == 'gbp'){
+            for(let i = 0; i < items.length; i++){
+                $(`#${items[i].id}-price`).html(`<span>&#163;</span>${parseFloat(items[i].price * rate).toFixed(2)}`);
+            }
+        } else {
+            for(let i = 0; i < items.length; i++){
+                $(`#${items[i].id}-price`).html(`${"$" + parseFloat(items[i].price * rate).toFixed(2)}`);
+            }
+        }
+    }
+
+    async function setPrice(){
+        let currency = $('#currency-type').val();
+        let rate = await moneyFetchCall(currency);
+        return rate;
+    }
+
+    async function updatePrice(){
+        let exchange = await setPrice();
+        changePrice(exchange);
+    }
+
+    async function updateCartPrice(){
+        let exchange = await setPrice();
+    
+        $('tr td:nth-child(4)').each(function(){
+            let this_id = $(this).parent().attr('id').split("-");
+            for(let i = 0; i < items.length; i++){
+                if(this_id[0] == items[i].id){
+                    $(this).empty().append(parseFloat(items[i].price * exchange).toFixed(2));
+                    let price_cell = parseFloat($(this).text());
+                    let quantity_cell = parseFloat($(this).prev().text());
+                    $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2))
+                }
+            }
+        });
+
+    }
+    
     // fetch call from fake store api for cards and catlog items //
-    fetch('https://fakestoreapi.com/products')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
+
+    let storeURL = 'https://fakestoreapi.com/products/';
+
+    function moneyFetchCall(code){
+        let moneyURL = `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/cad/${code}.json`;
+        return fetch(moneyURL)
+            .then(response => {
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('broken api');
+            })
+            .then((data)=> {
+                let code = $('#currency-type').val();
+                if(code == 'cad'){ return data.cad};
+                if(code == 'usd'){ return data.usd};
+                if(code == 'gbp'){ return data.gbp};
+                })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+    
+    function storeFetchCall(url){
+        fetch(url)
+        .then(response => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('broken api');
+        }
+        )
+        .then((data)=> {
             items = createItems(data);
             createCard(items);
+        })
+        .catch((e) => {
+            let url = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/fakestoreapi.json';
+            storeFetchCall(url);
         });
-    
+    }
+    storeFetchCall(storeURL);
+
     // makes sure there isnt anything in the shopping cart items cookie //
     set_cookie("shopping_cart_items", null);
 
@@ -178,7 +247,6 @@ $(document).ready(function(){
         cart_items[product_id]++;
     
         set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage
-        console.log(get_cookie('shopping_cart_items'));
 
         setCart(cart_items);
     });
@@ -186,11 +254,6 @@ $(document).ready(function(){
     $(document).on('click', '.rm-cart-btn', function(){
         var product_id = $(this).closest("tr").attr("id");
         let row = document.getElementById(product_id);
-        // row.deleteCell(0);
-        // row.deleteCell(0);
-        // row.deleteCell(0);
-        // row.deleteCell(0);
-        // row.deleteCell(0);
 
         row.parentNode.removeChild(row);
 
@@ -199,7 +262,6 @@ $(document).ready(function(){
         cart_items[product_id] = undefined;
         set_cookie("shopping_cart_items", cart_items);
 
-        console.log($("#cart-items tr").length);
         if($("#cart-items tr").length == 1){
             $('#cart-items').hide();
             $('#clear').hide(); 
@@ -218,4 +280,11 @@ $(document).ready(function(){
     $('#checkout').on('click',function(){
         $('#checkoutModal').modal('show').hide().fadeIn(300);
     });
+
+    $("#currency-type").change(function () {
+
+        updatePrice();
+        updateCartPrice();
+    });
+
 });
