@@ -179,7 +179,65 @@ $(document).ready(function(){
                                         <button class="btn btn-primary px-4" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
                                         <button class="btn px-4" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
                                     </div>
-                                    Shipping Info
+                                    <h5 class="modal-title">Shipping Info</h5>
+                                    <input type="checkbox" id="same-as-billing" name="shipping-info" value="metagross">
+                                    <label for="same-as-billing">Same as Billing</label>
+                                    <div class="d-flex flex-row">
+                                        <div class="mb-1 me-2 w-50 d-flex flex-column">
+                                            <label for="shipping-first-name">First Name</label>
+                                            <input id="shipping-first-name" type="text" class="form-control" aria-label="shipping-first-name" placeholder="first name">
+                                            <p id="shipping-first-name-error"></p>
+                                        </div>
+                                        <div class="mb-1 ms-2 w-50 d-flex flex-column">
+                                            <label for="shipping-last-name">Last Name</label>
+                                            <input id="shipping-last-name" type="text" class="form-control" aria-label="shipping-last-name" placeholder="last name">
+                                            <p id="shipping-last-name-error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="shipping-add-1">Street Address</label>
+                                        <input id="shipping-add-1" type="text" class="form-control" aria-label="shipping-add-1" placeholder="Street Address">
+                                        <p id="shipping-add-1-error"></p>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="shipping-add-2">Apt, Suite, etc. (Optional)</label>
+                                        <input id="shipping-add-2" type="text" class="form-control" aria-label="shipping-add-2" placeholder="Apt Address">
+                                        <p id="shipping-add-2-error"></p>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="mb-1 w-50 me-2 d-flex flex-column">
+                                            <label for="shipping-city">City</label>
+                                            <input id="shipping-city" type="text" class="form-control" aria-label="shipping-city" placeholder="City">
+                                            <p id="shipping-city-error"></p>
+                                        </div>
+                                        <div class="mb-1 w-50 ms-2 d-flex flex-column">
+                                            <label for="shipping-porvince">Province/State</label>
+                                            <input id="shipping-province" type="text" class="form-control" aria-label="shipping-province" placeholder="Province/State">
+                                            <p id="shipping-province-error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="mb-1 w-50 me-2 d-flex flex-column">
+                                            <label for="shipping-country">Country</label>
+                                            <input id="shipping-country" type="text" class="form-control" aria-label="shipping-country" placeholder="Country">
+                                            <p id="shipping-country-error"></p>
+                                        </div>
+                                        <div class="mb-1 w-50 ms-2 d-flex flex-column">
+                                            <label for="shipping-postal-code">Postal Code</label>
+                                            <input id="shipping-postal-code" type="text" class="form-control" aria-label="shipping-postal-code" placeholder="Postal Code/Zip">
+                                            <p id="shipping-postal-error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="shipping-email">Email Address</label>
+                                        <input id="shipping-email" type="text" class="form-control" aria-label="email" placeholder="Email Address">
+                                        <p id="shipping-email-error"></p>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="shipping-phone">Phone Number</label>
+                                        <input id="shipping-phone" type="text" class="form-control" aria-label="phone" placeholder="Phone Number">
+                                        <p id="shipping-phone-error"></p>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
@@ -224,7 +282,7 @@ $(document).ready(function(){
         $('#products').html('');
         for(let i = 0; i<prod.length; i++){
             $('#products').append(
-                `<div class="cart-div card ms-3 me-3 mt-2 mb-2">
+                `<div class="cart-div card col-10 ms-1 me-1 mt-2 mb-2">
                     <img src="${prod[i].image}" class="card-img-top" alt="${prod[i].title}">
                     <div class="card-body">
                         <h5 class="card-title">${prod[i].title}</h5>
