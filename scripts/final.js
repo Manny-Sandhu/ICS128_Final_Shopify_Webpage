@@ -20,7 +20,7 @@ $(document).ready(function(){
                                 <table id="cart-items" class="table border-0"></table>
                                 <div id="cart_buttons" class="d-flex flex-row">
                                     <button class="btn btn-dark" id="clear">Clear Cart</button>
-                                    <button class=btn btn-dark" id="checkout">Checkout</button>
+                                    <button class="btn btn-dark" id="checkout">Checkout</button>
                                 </div>
                             </div>
                         </div>
@@ -30,7 +30,7 @@ $(document).ready(function(){
                      </div>
                      
 
-                    <div class="modal modal-lg" id="paymentModal" aria-hidden="true" aria-labelledby="paymentModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="paymentModal" aria-hidden="true" aria-labelledby="paymentModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -86,7 +86,7 @@ $(document).ready(function(){
                     </div>
 
 
-                    <div class="modal modal-lg" id="billingModal" aria-hidden="true" aria-labelledby="billingModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="billingModal" aria-hidden="true" aria-labelledby="billingModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -129,7 +129,7 @@ $(document).ready(function(){
                                             <p id="city-error"></p>
                                         </div>
                                         <div class="mb-1 w-50 ms-2 d-flex flex-column">
-                                            <label for="porvince">Province/State</label>
+                                            <label for="province">Province/State</label>
                                             <input id="province" type="text" class="form-control" aria-label="province" placeholder="Province/State">
                                             <p id="province-error"></p>
                                         </div>
@@ -166,7 +166,7 @@ $(document).ready(function(){
                     </div>
 
 
-                    <div class="modal modal-lg" id="shippingModal" aria-hidden="true" aria-labelledby="shippingModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="shippingModal" aria-hidden="true" aria-labelledby="shippingModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -180,63 +180,65 @@ $(document).ready(function(){
                                         <button class="btn px-4" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
                                     </div>
                                     <h5 class="modal-title">Shipping Info</h5>
-                                    <input type="checkbox" id="same-as-billing" name="shipping-info" value="metagross">
+                                    <input type="checkbox" id="same-as-billing" name="shipping-info" value="yes">
                                     <label for="same-as-billing">Same as Billing</label>
-                                    <div class="d-flex flex-row">
-                                        <div class="mb-1 me-2 w-50 d-flex flex-column">
-                                            <label for="shipping-first-name">First Name</label>
-                                            <input id="shipping-first-name" type="text" class="form-control" aria-label="shipping-first-name" placeholder="first name">
-                                            <p id="shipping-first-name-error"></p>
+                                    <div id="hide-if-same">
+                                        <div class="d-flex flex-row">
+                                            <div class="mb-1 me-2 w-50 d-flex flex-column">
+                                                <label for="shipping-first-name">First Name</label>
+                                                <input id="shipping-first-name" type="text" class="form-control" aria-label="shipping-first-name" placeholder="first name">
+                                                <p id="shipping-first-name-error"></p>
+                                            </div>
+                                            <div class="mb-1 ms-2 w-50 d-flex flex-column">
+                                                <label for="shipping-last-name">Last Name</label>
+                                                <input id="shipping-last-name" type="text" class="form-control" aria-label="shipping-last-name" placeholder="last name">
+                                                <p id="shipping-last-name-error"></p>
+                                            </div>
                                         </div>
-                                        <div class="mb-1 ms-2 w-50 d-flex flex-column">
-                                            <label for="shipping-last-name">Last Name</label>
-                                            <input id="shipping-last-name" type="text" class="form-control" aria-label="shipping-last-name" placeholder="last name">
-                                            <p id="shipping-last-name-error"></p>
+                                        <div class="mb-1 d-flex flex-column">
+                                            <label for="shipping-add-1">Street Address</label>
+                                            <input id="shipping-add-1" type="text" class="form-control" aria-label="shipping-add-1" placeholder="Street Address">
+                                            <p id="shipping-add-1-error"></p>
                                         </div>
-                                    </div>
-                                    <div class="mb-1 d-flex flex-column">
-                                        <label for="shipping-add-1">Street Address</label>
-                                        <input id="shipping-add-1" type="text" class="form-control" aria-label="shipping-add-1" placeholder="Street Address">
-                                        <p id="shipping-add-1-error"></p>
-                                    </div>
-                                    <div class="mb-1 d-flex flex-column">
-                                        <label for="shipping-add-2">Apt, Suite, etc. (Optional)</label>
-                                        <input id="shipping-add-2" type="text" class="form-control" aria-label="shipping-add-2" placeholder="Apt Address">
-                                        <p id="shipping-add-2-error"></p>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <div class="mb-1 w-50 me-2 d-flex flex-column">
-                                            <label for="shipping-city">City</label>
-                                            <input id="shipping-city" type="text" class="form-control" aria-label="shipping-city" placeholder="City">
-                                            <p id="shipping-city-error"></p>
+                                        <div class="mb-1 d-flex flex-column">
+                                            <label for="shipping-add-2">Apt, Suite, etc. (Optional)</label>
+                                            <input id="shipping-add-2" type="text" class="form-control" aria-label="shipping-add-2" placeholder="Apt Address">
+                                            <p id="shipping-add-2-error"></p>
                                         </div>
-                                        <div class="mb-1 w-50 ms-2 d-flex flex-column">
-                                            <label for="shipping-porvince">Province/State</label>
-                                            <input id="shipping-province" type="text" class="form-control" aria-label="shipping-province" placeholder="Province/State">
-                                            <p id="shipping-province-error"></p>
+                                        <div class="d-flex flex-row">
+                                            <div class="mb-1 w-50 me-2 d-flex flex-column">
+                                                <label for="shipping-city">City</label>
+                                                <input id="shipping-city" type="text" class="form-control" aria-label="shipping-city" placeholder="City">
+                                                <p id="shipping-city-error"></p>
+                                            </div>
+                                            <div class="mb-1 w-50 ms-2 d-flex flex-column">
+                                                <label for="shipping-province">Province/State</label>
+                                                <input id="shipping-province" type="text" class="form-control" aria-label="shipping-province" placeholder="Province/State">
+                                                <p id="shipping-province-error"></p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <div class="mb-1 w-50 me-2 d-flex flex-column">
-                                            <label for="shipping-country">Country</label>
-                                            <input id="shipping-country" type="text" class="form-control" aria-label="shipping-country" placeholder="Country">
-                                            <p id="shipping-country-error"></p>
+                                        <div class="d-flex flex-row">
+                                            <div class="mb-1 w-50 me-2 d-flex flex-column">
+                                                <label for="shipping-country">Country</label>
+                                                <input id="shipping-country" type="text" class="form-control" aria-label="shipping-country" placeholder="Country">
+                                                <p id="shipping-country-error"></p>
+                                            </div>
+                                            <div class="mb-1 w-50 ms-2 d-flex flex-column">
+                                                <label for="shipping-postal-code">Postal Code</label>
+                                                <input id="shipping-postal-code" type="text" class="form-control" aria-label="shipping-postal-code" placeholder="Postal Code/Zip">
+                                                <p id="shipping-postal-error"></p>
+                                            </div>
                                         </div>
-                                        <div class="mb-1 w-50 ms-2 d-flex flex-column">
-                                            <label for="shipping-postal-code">Postal Code</label>
-                                            <input id="shipping-postal-code" type="text" class="form-control" aria-label="shipping-postal-code" placeholder="Postal Code/Zip">
-                                            <p id="shipping-postal-error"></p>
+                                        <div class="mb-1 d-flex flex-column">
+                                            <label for="shipping-email">Email Address</label>
+                                            <input id="shipping-email" type="text" class="form-control" aria-label="email" placeholder="Email Address">
+                                            <p id="shipping-email-error"></p>
                                         </div>
-                                    </div>
-                                    <div class="mb-1 d-flex flex-column">
-                                        <label for="shipping-email">Email Address</label>
-                                        <input id="shipping-email" type="text" class="form-control" aria-label="email" placeholder="Email Address">
-                                        <p id="shipping-email-error"></p>
-                                    </div>
-                                    <div class="mb-1 d-flex flex-column">
-                                        <label for="shipping-phone">Phone Number</label>
-                                        <input id="shipping-phone" type="text" class="form-control" aria-label="phone" placeholder="Phone Number">
-                                        <p id="shipping-phone-error"></p>
+                                        <div class="mb-1 d-flex flex-column">
+                                            <label for="shipping-phone">Phone Number</label>
+                                            <input id="shipping-phone" type="text" class="form-control" aria-label="phone" placeholder="Phone Number">
+                                            <p id="shipping-phone-error"></p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -248,7 +250,7 @@ $(document).ready(function(){
                     </div>
 
 
-                    <div class="modal modal-lg" id="confirmModal" aria-hidden="true" aria-labelledby="confirmModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="confirmModal" aria-hidden="true" aria-labelledby="confirmModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -454,6 +456,7 @@ $(document).ready(function(){
         .then((data)=> {
             items = createItems(data);
             createCard(items);
+            //console.log($("html").html());    // remove this at the end but keep it for validation
         })
         .catch((e) => {
             let url = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/fakestoreapi.json';
@@ -563,7 +566,7 @@ $(document).ready(function(){
         }
     });
 
-    // validate on focus out because on change is distracting //
+    // validate on focus out instead of change because it works better for this //
     $('#credit-card').on('change', function(){
 
         let value = $('#credit-card').val().replace(/\s/g, '');
@@ -687,7 +690,7 @@ $(document).ready(function(){
             $('#expire-num-error').html('');
         } else {
             $('#expire-num').val('').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#expire-num-error').html('please enter the 3 numbers on the back of your card').css('color','red');
+            $('#expire-num-error').html('please enter the 3 numbers on the back of your card').css('color','red').hide().show(200);
         }
     });
 
@@ -705,7 +708,7 @@ $(document).ready(function(){
             $('#first-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#first-name-error').html('');
         } else {
-            $('#first-name-error').html('Please enter a vaild first name without spaces').css('color','red');
+            $('#first-name-error').html('Please enter a vaild first name without spaces').css('color','red').hide().show(200);
             $('#first-name').css('background-color', 'rgba(240,128,128, 0.25)');
         }
     });
@@ -719,7 +722,7 @@ $(document).ready(function(){
             $('#last-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#last-name-error').html('');
         } else {
-            $('#last-name-error').html('Please enter a vaild last name without spaces').css('color','red');
+            $('#last-name-error').html('Please enter a vaild last name without spaces').css('color','red').hide().show(200);
             $('#last-name').css('background-color', 'rgba(240,128,128, 0.25)');
         }
     });
@@ -749,7 +752,7 @@ $(document).ready(function(){
 
     // start of address validation //
 
-    $('#billing-add-1').on('change', function(){
+    $('#billing-add-1').on('focusout', function(){
         
         let value = $('#billing-add-1').val();
         let add_check = /\w+(\s\w+){2,}/;
@@ -759,25 +762,25 @@ $(document).ready(function(){
             $('#billing-add-1-error').html('');
         } else {
             $('#billing-add-1').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#billing-add-1-error').html('Please make sure you entered a correct street number');
+            $('#billing-add-1-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
         }
     });
 
-    $('#billing-add-2').on('change', function(){
+    $('#billing-add-2').on('focusout', function(){
 
         let value = $('#billing-add-2').val();
-        let add2_check = /\w+(\s\w+){2,}/;
+        let add2_check = /^[a-zA-Z0-9 -.]*$/;
 
         if(add2_check.test(value)){
             $('#billing-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#billing-add-2-error').html('');
         } else {
             $('#billing-add-2').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#billing-add-2-error').html('Please make sure you entered a correct street number');
+            $('#billing-add-2-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
         }
     });
 
-    $('#city').on('change', function(){
+    $('#city').on('focusout', function(){
 
         let value = $('#city').val();
         let city_check = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
@@ -787,7 +790,7 @@ $(document).ready(function(){
             $('#city-error').html('');
         } else {
             $('#city').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#city-error').html('Please make sure you entered a valid city');
+            $('#city-error').html('Please make sure you entered a valid city').css('color','red').hide().show(200);
         }
 
     });
@@ -795,7 +798,7 @@ $(document).ready(function(){
     $('#country').attr('maxlength', '2');
     $('#province').attr('maxlength', '2');
 
-    $('#province').on('change', function(){
+    $('#province').on('focusout', function(){
 
         let value = $('#province').val().toUpperCase();
         let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
@@ -806,12 +809,12 @@ $(document).ready(function(){
             $('#province-error').html('');
         } else {
             $('#province').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#province-error').html('Please make sure you entered a valid province or state code');
+            $('#province-error').html('Please make sure you entered a valid province or state code').css('color','red').hide().show(200);
         }
 
     });
 
-    $('#country').on('change', function(){
+    $('#country').on('focusout', function(){
 
         let value = $('#country').val().toUpperCase();
         let country_check = /CA|US/;
@@ -821,14 +824,14 @@ $(document).ready(function(){
             $('#country-error').html('');
         } else {
             $('#country').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#country-error').html('Please enter either CA or US');
+            $('#country-error').html('Please enter either CA or US').css('color','red').hide().show(200);
         }
 
     });
 
-    $('#postal').on('change', function(){
+    $('#postal-code').on('focusout', function(){
 
-        let value = $('#postal').val();
+        let value = $('#postal-code').val().toUpperCase();
         let postal_check = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/;
 
         if(postal_check.test(value)){
@@ -836,14 +839,17 @@ $(document).ready(function(){
             $('#postal-error').html('');
         } else {
             $('#postal-code').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#postal-error').html('Please enter either CA or US');
+            $('#postal-error').html('Please enter a valid postal code').css('color','red').hide().show(200);
         }
 
     });
 
     // end of address validation //
    
-    $('#email').on('change', function(){
+
+    // start of perosonal information validation //
+
+    $('#email').on('focusout', function(){
 
         let value = $('#email').val();
         let country_check = /^\w{2,256}\@\w+[/.]\w*/;
@@ -853,12 +859,12 @@ $(document).ready(function(){
             $('#email-error').html('');
         } else {
             $('#email').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#email-error').html('Please enter a vaild email');
+            $('#email-error').html('Please enter a vaild email').css('color','red').hide().show(200);
         }
 
     });
 
-    $('#phone').on('change', function(){
+    $('#phone').on('focusout', function(){
 
         let value = $('#phone').val();
         let country_check = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$/;
@@ -868,11 +874,244 @@ $(document).ready(function(){
             $('#phone-error').html('');
         } else {
             $('#phone').css('background-color', 'rgba(240,128,128, 0.25)');
-            $('#phone-error').html('Please enter a valid phone number');
+            $('#phone-error').html('Please enter a valid phone number').css('color','red').hide().show(200);
         }
 
     });
 
+    // end of perosonal information validation //
 
+    // end of billing validation //
+
+
+    // start of shipping validation //
+
+    // check if the same //
+    function checked(){
+        let fName = $('#shipping-first-name');
+        let lName = $('#shipping-last-name');
+        let add1 = $('#shipping-add-1');
+        let add2 = $('#shipping-add-2');
+        let city = $('#shipping-city');
+        let prov = $('#shipping-province');
+        let country = $('#shipping-country');
+        let postal = $('#shipping-postal-code');
+        let email = $('#shipping-email');
+        let phone = $('#shipping-phone');
+
+        if(!$('#same-as-billing').is(':checked')){
+            $('#hide-if-same').show(200);
+
+            fName.val('').css('background-color', 'revert');
+            $('#shipping-first-name-error').hide();
+
+            lName.val('').css('background-color', 'revert');
+            $('#shipping-last-name-error').hide();
+
+            add1.val('').css('background-color', 'revert');
+            $('#shipping-add-1-error').hide();
+
+            add2.val('').css('background-color', 'revert');
+            $('#shipping-add-2-error').hide();
+
+            city.val('').css('background-color', 'revert');
+            $('#shipping-city-error').hide();
+
+            prov.val('').css('background-color', 'revert');
+            $('#shipping-province-error').hide();
+
+            country.val('').css('background-color', 'revert');
+            $('#shipping-country-error').hide();
+
+            postal.val('').css('background-color', 'revert');
+            $('#shipping-postal-error').hide();
+
+            email.val('').css('background-color', 'revert');
+            $('#shipping-email-error').hide();
+
+            phone.val('').css('background-color', 'revert');
+            $('#shipping-phone-error').hide();
+        } else {
+            $('#hide-if-same').hide();
+            fName.val($('#first-name').val()).trigger('focusout');
+            lName.val($('#last-name').val()).trigger('focusout');
+            add1.val($('#billing-add-1').val()).trigger('focusout');
+            add2.val($('#billing-add-2').val()).trigger('focusout');
+            city.val($('#city').val()).trigger('focusout');
+            prov.val($('#province').val()).trigger('focusout');
+            country.val($('#country').val()).trigger('focusout');
+            postal.val($('#postal-code').val()).trigger('focusout');
+            email.val($('#email').val()).trigger('focusout');
+            phone.val($('#phone').val()).trigger('focusout');
+        }
+    }
+
+    checked();
+    $('#same-as-billing').on('click', function(){
+        checked();
+    });
+    // check if the same //
+
+
+    // start of shipping address validation //
+
+    // shipping name validation //
+
+    $('#shipping-first-name').on('focusout', function(){
+
+        let value = $('#shipping-first-name').val();
+        let name_check = /^[a-zA-Z]+\-?[a-zA-Z]*[^\s\W0-9]$/;
+
+        if(name_check.test(value)){
+            $('#shipping-first-name').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-first-name-error').html('');
+        } else {
+            $('#shipping-first-name-error').html('Please enter a vaild first name without spaces').css('color','red').hide().show(200);
+            $('#shipping-first-name').css('background-color', 'rgba(240,128,128, 0.25)');
+        }
+    });
+
+    $('#shipping-last-name').on('focusout', function(){
+
+        let value = $('#shipping-last-name').val();
+        let name_check = /^[a-zA-Z]+['-]?[a-zA-Z]*[^\s\W0-9]$/;
+
+        if(name_check.test(value)){
+            $('#shipping-last-name').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-last-name-error').html('');
+        } else {
+            $('#shipping-last-name-error').html('Please enter a vaild last name without spaces').css('color','red').hide().show(200);
+            $('#shipping-last-name').css('background-color', 'rgba(240,128,128, 0.25)');
+        }
+    });
+
+    // end of shipping name validation //
+
+    $('#shipping-add-1').on('focusout', function(){
+        
+        let value = $('#shipping-add-1').val();
+        let add_check = /\w+(\s\w+){2,}/;
+
+        if(add_check.test(value)){
+            $('#shipping-add-1').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-add-1-error').html('');
+        } else {
+            $('#shipping-add-1').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-add-1-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
+        }
+    });
+
+    $('#shipping-add-2').on('focusout', function(){
+
+        let value = $('#shipping-add-2').val();
+        let add2_check = /^[a-zA-Z0-9 -.]*$/;
+
+        if(add2_check.test(value)){
+            $('#shipping-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-add-2-error').html('');
+        } else {
+            $('#shipping-add-2').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-add-2-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
+        }
+    });
+
+    $('#shipping-city').on('focusout', function(){
+
+        let value = $('#shipping-city').val();
+        let city_check = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
+
+        if(city_check.test(value)){
+            $('#shipping-city').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-city-error').html('');
+        } else {
+            $('#shipping-city').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-city-error').html('Please make sure you entered a valid city').css('color','red').hide().show(200);
+        }
+
+    });
+
+    $('#shipping-country').attr('maxlength', '2');
+    $('#shipping-province').attr('maxlength', '2');
+
+    $('#shipping-province').on('focusout', function(){
+
+        let value = $('#shipping-province').val().toUpperCase();
+        let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
+        let prov_check = /BC|AB|SK|ON|MB|QC|N[BSLTU]|NS|NL|PE|NU|YT|NY/;
+
+        if(prov_check.test(value) || state_check.test(value)){
+            $('#shipping-province').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-province-error').html('');
+        } else {
+            $('#shipping-province').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-province-error').html('Please make sure you entered a valid province or state code').css('color','red').hide().show(200);
+        }
+
+    });
+
+    $('#shipping-country').on('focusout', function(){
+
+        let value = $('#shipping-country').val().toUpperCase();
+        let country_check = /CA|US/;
+
+        if(country_check.test(value)){
+            $('#shipping-country').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-country-error').html('');
+        } else {
+            $('#shipping-country').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-country-error').html('Please enter either CA or US').css('color','red').hide().show(200);
+        }
+
+    });
+
+    $('#shipping-postal-code').on('focusout', function(){
+
+        let value = $('#shipping-postal-code').val().toUpperCase();
+        let postal_check = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/;
+
+        if(postal_check.test(value)){
+            $('#shipping-postal-code').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-postal-error').html('');
+        } else {
+            $('#shipping-postal-code').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-postal-error').html('Please a valid postal code').css('color','red').hide().show(200);
+        }
+
+    });
+
+    // end of address validation //
+   
+
+    // start of perosonal information validation //
+
+    $('#shipping-email').on('focusout', function(){
+
+        let value = $('#shipping-email').val();
+        let country_check = /^\w{2,256}\@\w+[/.]\w*/;
+
+        if(country_check.test(value)){
+            $('#shipping-email').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-email-error').html('');
+        } else {
+            $('#shipping-email').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-email-error').html('Please enter a vaild email').css('color','red').hide().show(200);
+        }
+
+    });
+
+    $('#shipping-phone').on('focusout', function(){
+
+        let value = $('#shipping-phone').val();
+        let country_check = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$/;
+
+        if(country_check.test(value)){
+            $('#shipping-phone').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#shipping-phone-error').html('');
+        } else {
+            $('#shipping-phone').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#shipping-phone-error').html('Please enter a valid phone number').css('color','red').hide().show(200);
+        }
+
+    });
 
 });
