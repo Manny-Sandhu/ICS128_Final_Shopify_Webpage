@@ -20,4 +20,16 @@
     padding: 0px;
 }
 
-.modal-backdrop { --bs-backdrop-zindex: none; } /* makes the model clickable when the offcanvas is open */
+.modal-header{
+    justify-content: center;
+}
+
+#paymentModal .input-group-text {
+    border-radius: 5px 0 0 5px;
+}
+
+#credit-card {
+    border-radius: 0 5px 5px 0;
+}
+
+/* .modal-backdrop { --bs-backdrop-zindex: none; } makes the model clickable when the offcanvas is open */

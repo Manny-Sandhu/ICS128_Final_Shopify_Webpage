@@ -28,20 +28,187 @@ $(document).ready(function(){
                      <div id="shopping" class="bg-success">
                         <div id="products" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 d-flex flex-row justify-content-center"></div>
                      </div>
-                     <div class="modal fade" id="checkoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+                     
+
+                    <div class="modal modal-lg" id="paymentModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="paymentModalLabel" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="checkoutModalLabel">Modal title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chekout</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-row">
+                                        <button class="btn btn-primary px-4" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
+                                        <button class="btn px-4" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
+                                        <button class="btn px-4" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
+                                        <button class="btn px-4" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
+                                    </div>
+                                    <h5 class="modal-title">Payment Method</h5>
+                                    <div class="d-flex flex-column">
+                                        <div class="mb-1 d-flex flex-column input-group">
+                                            <label for="credit-card">credit card #</label>
+                                            <div class="d-flex flex-row">
+                                                <span class="input-group-text">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
+                                                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
+                                                        <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
+                                                    </svg>
+                                                    <span id="credit-type"></span>
+                                                </span>
+                                                <input id="credit-card" type="text" class="form-control" aria-label="credit-card" placeholder="Credit Card #">
+                                            </div>
+                                            <p id="credit-card-error"></p>
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <div class="mb-1 me-2 d-flex flex-column">
+                                                <label for="expire-month">Expiry month</label>
+                                                <input id="expire-month" type="text" class="form-control" aria-label="expire-month" placeholder="mm">
+                                                <p id="expire-error"></p>
+                                            </div>
+                                            <div class="mb-1 ms-2 me-2 d-flex flex-column">
+                                                <label for="expire-year">Expiry year</label>
+                                                <input id="expire-year" type="text" class="form-control" aria-label="expire-year" placeholder="yyyy">
+                                            </div>
+                                            <div class="mb-1 ms-2 d-flex flex-column">
+                                                <label for="expire-num">Security Info</label>
+                                                <input id="expire-num" type="text" class="form-control" aria-label="expire-num" placeholder="###">
+                                                <p id="expire-num-error"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-target="#billingModal" data-bs-toggle="modal">Next</button>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                ...
+                        </div>
+                    </div>
+
+
+                    <div class="modal modal-lg" id="billingModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="billingModalLabel" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chekout</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-row">
+                                        <button class="btn px-4" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
+                                        <button class="btn btn-primary px-4" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
+                                        <button class="btn px-4" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
+                                        <button class="btn px-4" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
+                                    </div>
+                                    <h5 class="modal-title">Billing Info</h5>
+                                    <div class="d-flex flex-row">
+                                        <div class="mb-1 me-2 w-50 d-flex flex-column">
+                                            <label for="first-name">First Name</label>
+                                            <input id="first-name" type="text" class="form-control" aria-label="first-name" placeholder="first name">
+                                            <p id="first-name-error"></p>
+                                        </div>
+                                        <div class="mb-1 ms-2 w-50 d-flex flex-column">
+                                            <label for="last-name">Last Name</label>
+                                            <input id="last-name" type="text" class="form-control" aria-label="last-name" placeholder="last name">
+                                            <p id="last-name-error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="billing-add-1">Street Address</label>
+                                        <input id="billing-add-1" type="text" class="form-control" aria-label="billing-add-1" placeholder="Street Address">
+                                        <p id="billing-add-1-error"></p>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="billing-add-2">Apt, Suite, etc. (Optional)</label>
+                                        <input id="billing-add-2" type="text" class="form-control" aria-label="billing-add-2" placeholder="Apt Address">
+                                        <p id="billing-add-2-error"></p>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="mb-1 w-50 me-2 d-flex flex-column">
+                                            <label for="city">City</label>
+                                            <input id="city" type="text" class="form-control" aria-label="city" placeholder="City">
+                                            <p id="city-error"></p>
+                                        </div>
+                                        <div class="mb-1 w-50 ms-2 d-flex flex-column">
+                                            <label for="porvince">Province/State</label>
+                                            <input id="province" type="text" class="form-control" aria-label="province" placeholder="Province/State">
+                                            <p id="province-error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="mb-1 w-50 me-2 d-flex flex-column">
+                                            <label for="country">Country</label>
+                                            <input id="country" type="text" class="form-control" aria-label="country" placeholder="Country">
+                                            <p id="country-error"></p>
+                                        </div>
+                                        <div class="mb-1 w-50 ms-2 d-flex flex-column">
+                                            <label for="postal-code">Postal Code</label>
+                                            <input id="postal-code" type="text" class="form-control" aria-label="postal-code" placeholder="Postal Code/Zip">
+                                            <p id="postal-error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="email">Email Address</label>
+                                        <input id="email" type="text" class="form-control" aria-label="email" placeholder="Email Address">
+                                        <p id="email-error"></p>
+                                    </div>
+                                    <div class="mb-1 d-flex flex-column">
+                                        <label for="phone">Phone Number</label>
+                                        <input id="phone" type="text" class="form-control" aria-label="phone" placeholder="Phone Number">
+                                        <p id="phone-error"></p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-target="#shippingModal" data-bs-toggle="modal">Next</button>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Understood</button>
+                        </div>
+                    </div>
+
+
+                    <div class="modal modal-lg" id="shippingModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="shippingModalLabel" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chekout</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-row">
+                                        <button class="btn px-4" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
+                                        <button class="btn px-4" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
+                                        <button class="btn btn-primary px-4" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
+                                        <button class="btn px-4" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
+                                    </div>
+                                    Shipping Info
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-target="#confirmModal" data-bs-toggle="modal">Next</button>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal modal-lg" id="confirmModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="confirmModalLabel" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chekout</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-row">
+                                        <button class="btn px-4" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
+                                        <button class="btn px-4" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
+                                        <button class="btn px-4" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
+                                        <button class="btn btn-primary px-4" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
+                                    </div>
+                                    Confirm Order
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-target="#" data-bs-toggle="modal">Confirm</button>
+                                </div>
                             </div>
                         </div>
                     </div>`
@@ -99,7 +266,7 @@ $(document).ready(function(){
     }
     function setCartTable(cart_list, cart, exchange){
         let table = document.querySelector("#cart-items");
-        
+        let totalPrice = 0;
         table.innerHTML =`<tr>
                             <th></td>
                             <th>Item</td>
@@ -109,7 +276,6 @@ $(document).ready(function(){
                           </tr>`;
 
         for(let i = 0; i < cart_list.length; i++){
-
             let row = table.insertRow(-1);
             row.setAttribute("id", cart_list[i].id + "-cart");
             let cell1 = row.insertCell(0);
@@ -123,10 +289,19 @@ $(document).ready(function(){
                                 </svg>`
             cell2.innerHTML = cart_list[i].title;
             cell3.innerHTML = cart[cart_list[i].id];
-            test = cart[cart_list[i].id];
             cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
             cell5.innerHTML = parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange).toFixed(2);
+            totalPrice += parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange);
         }
+        let subTotal = table.insertRow(-1);
+        subTotal.setAttribute('id', 'subtotal');
+        let text = subTotal.insertCell(0);
+        let amount = subTotal.insertCell(1);
+        text.innerHTML = "Subtotal";
+        text.colSpan = 3;
+        if($('#currency-type').val() == 'gbp'){ amount.innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; } 
+        else {amount.innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;}
+        amount.colSpan = 2;
     }
 
     async function setCart(cart){
@@ -166,7 +341,7 @@ $(document).ready(function(){
 
     async function updateCartPrice(){
         let exchange = await setPrice();
-    
+        let totalPrice = 0;
         $('tr td:nth-child(4)').each(function(){
             let this_id = $(this).parent().attr('id').split("-");
             for(let i = 0; i < items.length; i++){
@@ -174,11 +349,15 @@ $(document).ready(function(){
                     $(this).empty().append(parseFloat(items[i].price * exchange).toFixed(2));
                     let price_cell = parseFloat($(this).text());
                     let quantity_cell = parseFloat($(this).prev().text());
-                    $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2))
+                    $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2));
+                    totalPrice += parseFloat(price_cell * quantity_cell);
                 }
             }
         });
-
+        $('#subtotal')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;
+        if($('#currency-type').val() == 'gbp'){ 
+            $('#subtotal')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; 
+        }
     }
     
     // fetch call from fake store api for cards and catlog items //
@@ -248,6 +427,8 @@ $(document).ready(function(){
     
         set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage
 
+        $('#cart-items').show();
+
         setCart(cart_items);
     });
 
@@ -256,13 +437,13 @@ $(document).ready(function(){
         let row = document.getElementById(product_id);
 
         row.parentNode.removeChild(row);
+        updateCartPrice();
 
         product_id = parseInt(product_id.split("-"));
         var cart_items = get_cookie("shopping_cart_items");
         cart_items[product_id] = undefined;
         set_cookie("shopping_cart_items", cart_items);
-
-        if($("#cart-items tr").length == 1){
+        if($("#cart-items tr").length == 2){
             $('#cart-items').hide();
             $('#clear').hide(); 
             $('#checkout').hide();
@@ -278,13 +459,362 @@ $(document).ready(function(){
     });
 
     $('#checkout').on('click',function(){
-        $('#checkoutModal').modal('show').hide().fadeIn(300);
+        $('#paymentModal').modal('show').hide().fadeIn(300);
     });
 
     $("#currency-type").change(function () {
 
         updatePrice();
-        updateCartPrice();
+
+        if($('tr td:nth-child(4)')[0] != undefined){
+            updateCartPrice();
+        }
+
     });
+
+    // start of validation code //
+
+
+    // delete any non-numeric  to credit card info //   
+    $('#credit-card, #expire-month, #expire-year, #expire-num').on('keypress change', function () {
+        this.value = this.value.replace(/[^0-9\.]/g,'');  
+    });
+
+    // add spaces between 4 continous characters only for credit card number // 
+    $('#credit-card').on('keypress change', function () {
+        $(this).val(function (index, value) {   
+            return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');   // add spaces
+        });
+    });
+
+    
+    // credit card number validation start //
+
+    // globals needed for the 2 validation functions//
+    let visa_pass = /^4[0-9]{12}(?:[0-9]{3})?$/
+    let mc_pass = /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/
+    let amex_pass = /^3[47][0-9]{13}$/
+
+    // if the input was incorrect delete the card number and make the background revert
+    $('#credit-card').on('focusin', function(){
+        let value = $('#credit-card').val().replace(/\s/g, '');
+        if(visa_pass.test(value) | mc_pass.test(value) | amex_pass.test(value)){
+            // do not delete the credit card number if it is correct
+        } else {
+            $('#credit-card').css('background-color','revert').val('');
+        }
+    });
+
+    // validate on focus out because on change is distracting //
+    $('#credit-card').on('change', function(){
+
+        let value = $('#credit-card').val().replace(/\s/g, '');
+        
+        let visa_fail = /^4111111111111110$/
+        let mc_fail = /^5400000000001234$/
+        let amex_fail = /^375987654321001$/
+
+        // error messages and card type change depending on what card type is used //
+        if(visa_pass.test(value) || mc_pass.test(value) || amex_pass.test(value)){
+            if(visa_pass.test(value)){
+                
+                $('#credit-card').css('background-color','rgba(152,251,152, 0.25)');
+                $('#credit-card-error').html('')
+                $('#credit-type').html('&nbsp;Visa');
+
+                // test for the fail case //
+                if(visa_fail.test(value)){
+                    $('#credit-card-error').html('please check your visa number or enter a new credit card number').css('color','red').hide().show(200);
+                    $('#credit-card').css('background-color','rgba(240,128,128, 0.25)');
+                }
+
+            } else if(mc_pass.test(value)){
+            
+                $('#credit-card').css('background-color','rgba(152,251,152, 0.25)');
+                $('#credit-card-error').html('')
+                $('#credit-type').html('&nbsp;MasterCard');
+
+                // test for the fail case //
+                if(mc_fail.test(value)){
+                    $('#credit-card-error').html('please check your mastercard number or enter a new credit card number').css('color','red').hide().show(200);
+                    $('#credit-card').css('background-color','rgba(240,128,128, 0.25)');
+                }
+            } else {
+                
+                $('#credit-card').css('background-color','rgba(152,251,152, 0.25)');
+                $('#credit-card-error').html('')
+                $('#credit-type').html('&nbsp;Amex');
+
+                // test for the fail case //
+                if(amex_fail.test(value)){
+                    $('#credit-card-error').html('please check your visa number or enter a new credit card number').css('color','red').hide().show(200);
+                    $('#credit-card').css('background-color','rgba(240,128,128, 0.25)');
+                }
+            }
+        } else {
+            $('#credit-card-error').html('Sorry we dont recognize that card type please check the card or try a new one').css('color','red').hide().show(200);
+            $('#credit-card').css('background-color','rgba(240,128,128, 0.25)');
+        }
+
+    });
+
+    // credit card number validatin end //
+
+
+    // expiry validation start //
+
+    // add max length to attribute to year and month // 
+
+    $('#expire-month').attr('maxlength', '2');
+    $('#expire-year').attr('maxlength', '4');
+
+    $('#expire-month, #expire-year').on('change', function(){
+
+        let yy_value = $('#expire-year').val();
+        let mm_value = $('#expire-month').val();
+        
+        if(yy_value == '' || mm_value == ''){
+            // do nothing if one of the inputs is blanked
+        } else {
+            
+            let mm_pass = /^(0?[1-9]|1[0-2])$/;     // validation for month
+
+            // validation for year
+            let curDate = new Date();
+            let cardDate = new Date(`${yy_value}-${mm_value}-1`);
+
+            // check month then year and then both //
+            if(mm_pass.test(mm_value)){
+
+                $('#expire-month').css('background-color', 'rgba(152,251,152, 0.25)');
+                $('#expire-error').html('');
+
+                if(curDate.getFullYear() <= cardDate.getFullYear()){
+
+                    $('#expire-year').css('background-color', 'rgba(152,251,152, 0.25)');
+                    $('#expire-error').html('');
+
+                    if(curDate < cardDate){
+                        $('#expire-year, #expire-month').css('background-color', 'rgba(152,251,152, 0.25)');
+                        $('#expire-error').html('');
+                    } else {
+                        $('#expire-year, #expire-month').css('background-color', 'rgba(240,128,128, 0.25)');
+                        $('#expire-error').html('Please check the expiry date on your card').css('color','red').hide().show(200);
+                    }
+                }else {
+                    $('#expire-year').css('background-color', 'rgba(240,128,128, 0.25)');
+                    $('#expire-error').html('please enter a valid year').css('color','red').hide().show(200);
+                }
+            } else {
+                $('#expire-month').css('background-color', 'rgba(240,128,128, 0.25)');
+                $('#expire-error').html('please enter a valid month').css('color','red').hide().show(200);
+            }
+        }
+    });
+
+    // end of expiry validation //
+
+
+    // start of cv number validation //
+
+    $('#expire-num').attr('maxlength', '3');
+
+    $('#expire-num').on('focusout', function(){
+
+        let value = $('#expire-num').val();
+        let num_pass = /^[0-9]{3}$/
+        
+        if(num_pass.test(value)){
+            $('#expire-num').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#expire-num-error').html('');
+        } else {
+            $('#expire-num').val('').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#expire-num-error').html('please enter the 3 numbers on the back of your card').css('color','red');
+        }
+    });
+
+    // end of cv number validation //
+
+
+    // start of name validation //
+
+    $('#first-name').on('focusout', function(){
+
+        let value = $('#first-name').val();
+        let name_check = /^[a-zA-Z]+\-?[a-zA-Z]*[^\s\W0-9]$/;
+
+        if(name_check.test(value)){
+            $('#first-name').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#first-name-error').html('');
+        } else {
+            $('#first-name-error').html('Please enter a vaild first name without spaces').css('color','red');
+            $('#first-name').css('background-color', 'rgba(240,128,128, 0.25)');
+        }
+    });
+
+    $('#last-name').on('focusout', function(){
+
+        let value = $('#last-name').val();
+        let name_check = /^[a-zA-Z]+['-]?[a-zA-Z]*[^\s\W0-9]$/;
+
+        if(name_check.test(value)){
+            $('#last-name').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#last-name-error').html('');
+        } else {
+            $('#last-name-error').html('Please enter a vaild last name without spaces').css('color','red');
+            $('#last-name').css('background-color', 'rgba(240,128,128, 0.25)');
+        }
+    });
+
+    // end of name validation //
+
+
+    $('#billing-add-1').on('keypress change', function(){
+        function makereq(val){
+            var xmlhttp = new XMLHttpRequest();
+            var url = `https://geocoder.ca/?locate=${val}&json=1`;
+        
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let worked = JSON.parse(this.responseText); 
+                    console.log(worked);
+                }
+            }
+            xmlhttp.open("GET", url, true);
+	        xmlhttp.send();
+        }
+        let value = $('#billing-add-1').val();
+        makereq(value);
+
+    });
+
+
+    // start of address validation //
+
+    $('#billing-add-1').on('change', function(){
+        
+        let value = $('#billing-add-1').val();
+        let add_check = /\w+(\s\w+){2,}/;
+
+        if(add_check.test(value)){
+            $('#billing-add-1').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#billing-add-1-error').html('');
+        } else {
+            $('#billing-add-1').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#billing-add-1-error').html('Please make sure you entered a correct street number');
+        }
+    });
+
+    $('#billing-add-2').on('change', function(){
+
+        let value = $('#billing-add-2').val();
+        let add2_check = /\w+(\s\w+){2,}/;
+
+        if(add2_check.test(value)){
+            $('#billing-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#billing-add-2-error').html('');
+        } else {
+            $('#billing-add-2').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#billing-add-2-error').html('Please make sure you entered a correct street number');
+        }
+    });
+
+    $('#city').on('change', function(){
+
+        let value = $('#city').val();
+        let city_check = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
+
+        if(city_check.test(value)){
+            $('#city').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#city-error').html('');
+        } else {
+            $('#city').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#city-error').html('Please make sure you entered a valid city');
+        }
+
+    });
+
+    $('#country').attr('maxlength', '2');
+    $('#province').attr('maxlength', '2');
+
+    $('#province').on('change', function(){
+
+        let value = $('#province').val().toUpperCase();
+        let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
+        let prov_check = /BC|AB|SK|ON|MB|QC|N[BSLTU]|NS|NL|PE|NU|YT|NY/;
+
+        if(prov_check.test(value) || state_check.test(value)){
+            $('#province').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#province-error').html('');
+        } else {
+            $('#province').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#province-error').html('Please make sure you entered a valid province or state code');
+        }
+
+    });
+
+    $('#country').on('change', function(){
+
+        let value = $('#country').val().toUpperCase();
+        let country_check = /CA|US/;
+
+        if(country_check.test(value)){
+            $('#country').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#country-error').html('');
+        } else {
+            $('#country').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#country-error').html('Please enter either CA or US');
+        }
+
+    });
+
+    $('#postal').on('change', function(){
+
+        let value = $('#postal').val();
+        let postal_check = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/;
+
+        if(postal_check.test(value)){
+            $('#postal-code').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#postal-error').html('');
+        } else {
+            $('#postal-code').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#postal-error').html('Please enter either CA or US');
+        }
+
+    });
+
+    // end of address validation //
+   
+    $('#email').on('change', function(){
+
+        let value = $('#email').val();
+        let country_check = /^\w{2,256}\@\w+[/.]\w*/;
+
+        if(country_check.test(value)){
+            $('#email').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#email-error').html('');
+        } else {
+            $('#email').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#email-error').html('Please enter a vaild email');
+        }
+
+    });
+
+    $('#phone').on('change', function(){
+
+        let value = $('#phone').val();
+        let country_check = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$/;
+
+        if(country_check.test(value)){
+            $('#phone').css('background-color', 'rgba(152,251,152, 0.25)');
+            $('#phone-error').html('');
+        } else {
+            $('#phone').css('background-color', 'rgba(240,128,128, 0.25)');
+            $('#phone-error').html('Please enter a valid phone number');
+        }
+
+    });
+
+
 
 });
