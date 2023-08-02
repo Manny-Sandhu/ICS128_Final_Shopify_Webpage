@@ -30,7 +30,7 @@ $(document).ready(function(){
                      </div>
                      
 
-                    <div class="modal modal-lg" id="paymentModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="paymentModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="paymentModal" aria-hidden="true" aria-labelledby="paymentModalLabel" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -78,7 +78,7 @@ $(document).ready(function(){
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
                                     <button class="btn btn-primary" data-bs-target="#billingModal" data-bs-toggle="modal">Next</button>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ $(document).ready(function(){
                     </div>
 
 
-                    <div class="modal modal-lg" id="billingModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="billingModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="billingModal" aria-hidden="true" aria-labelledby="billingModalLabel" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -158,7 +158,7 @@ $(document).ready(function(){
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
                                     <button class="btn btn-primary" data-bs-target="#shippingModal" data-bs-toggle="modal">Next</button>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@ $(document).ready(function(){
                     </div>
 
 
-                    <div class="modal modal-lg" id="shippingModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="shippingModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="shippingModal" aria-hidden="true" aria-labelledby="shippingModalLabel" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -240,7 +240,7 @@ $(document).ready(function(){
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
                                     <button class="btn btn-primary" data-bs-target="#confirmModal" data-bs-toggle="modal">Next</button>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@ $(document).ready(function(){
                     </div>
 
 
-                    <div class="modal modal-lg" id="confirmModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="confirmModalLabel" tabindex="-1">
+                    <div class="modal modal-lg" id="confirmModal" aria-hidden="true" aria-labelledby="confirmModalLabel" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -264,7 +264,7 @@ $(document).ready(function(){
                                     Confirm Order
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
                                     <button class="btn btn-primary" data-bs-target="#" data-bs-toggle="modal">Confirm</button>
                                 </div>
                             </div>
