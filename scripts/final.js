@@ -4,15 +4,15 @@ let cart_counter = 0;
 $(document).ready(function(){
     // set up initial html for dynamic page //
     $('#page').html(
-                    `<div id="cart" class="bg-warning d-flex flex-row fixed-top">
+                    `<div id="cart" class="bg-success-subtle d-flex flex-row fixed-top">
                         <h1 class="me-auto ms-4">ICS Final Project</h2>
-                        <button id="viewCart" class="btn btn-primary ms-auto me-4 mt-2 mb-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                        <button id="viewCart" class="btn btn-success ms-auto me-4 mt-2 mb-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
                                 <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
                             </svg>
                             <span id="cart-number"></span>
                         </button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+                        <div class="offcanvas offcanvas-end bg-success-subtle" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
                             <div class="offcanvas-header">
                                 <h5 class="offcanvas-title" id="offcanvasCartLabel">Cart</h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -31,23 +31,48 @@ $(document).ready(function(){
                             </div>
                         </div>
                      </div>
-                     <div id="shopping" class="bg-success pt-5">
+                     <div id="shopping" class="pt-5">
                         <div id="products" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 d-flex flex-row justify-content-center"></div>
                      </div>
                      
 
                     <div class="modal modal-lg" id="paymentModal" aria-hidden="true" aria-labelledby="paymentModal" tabindex="-1">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog ">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header bg-success-subtle">
                                     <h5 class="modal-title">Checkout</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <button class="btn btn-primary px-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
-                                        <button class="btn px-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal" disabled>billing</button>
-                                        <button class="btn px-4 shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>shipping</button>
-                                        <button class="btn px-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>confim order</button>
+                                    <div class="d-flex flex-row justify-content-around justify-content-sm-center">
+                                        <button class="btn btn-success px-1 px-sm-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">
+                                            payment
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-piggy-bank" viewBox="0 0 16 16">
+                                                <path d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z"/>
+                                                <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal" disabled>
+                                            billing 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>
+                                            shipping
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+                                                <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362.798-.799.96-1.932.362-2.531-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532Z"/>
+                                                <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9.42 9.42 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a9.556 9.556 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093.067.017.12.033.16.045.184.06.279.13.351.295l.029.073a3.475 3.475 0 0 1 .157.721c.055.485.051 1.178-.159 2.065Zm-4.828 7.475.04-.04-.107 1.081a1.536 1.536 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a8.548 8.548 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006ZM5.205 5c-.625.626-.94 1.351-1.004 2.09a8.497 8.497 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107-.04.039Zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a2.835 2.835 0 0 0-.045-.283 3.078 3.078 0 0 0-.3-.041Z"/>
+                                                <path d="M7.009 12.139a7.632 7.632 0 0 1-1.804-1.352A7.568 7.568 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>
+                                            confim order
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                     <h5 class="modal-title">Payment Method</h5>
                                     <form id="payment-form">
@@ -86,8 +111,8 @@ $(document).ready(function(){
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary bill" data-bs-target="#billingModal" data-bs-toggle="modal" disabled>Next</button>
+                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success bill" data-bs-target="#billingModal" data-bs-toggle="modal" disabled>Next</button>
                                 </div>
                             </div>
                         </div>
@@ -97,15 +122,40 @@ $(document).ready(function(){
                     <div class="modal modal-lg" id="billingModal" aria-hidden="true" aria-labelledby="billingModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header bg-success-subtle">
                                     <h5 class="modal-title">Checkout</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <button class="btn px-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
-                                        <button class="btn btn-primary px-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
-                                        <button class="btn px-4 shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>shipping</button>
-                                        <button class="btn px-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>confim order</button>
+                                    <div class="d-flex flex-row justify-content-around justify-content-sm-center">
+                                        <button class="btn px-1 px-sm-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">
+                                            payment 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-piggy-bank" viewBox="0 0 16 16">
+                                                <path d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z"/>
+                                                <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-success px-1 px-sm-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal">
+                                            billing 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>
+                                            shipping
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+                                                <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362.798-.799.96-1.932.362-2.531-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532Z"/>
+                                                <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9.42 9.42 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a9.556 9.556 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093.067.017.12.033.16.045.184.06.279.13.351.295l.029.073a3.475 3.475 0 0 1 .157.721c.055.485.051 1.178-.159 2.065Zm-4.828 7.475.04-.04-.107 1.081a1.536 1.536 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a8.548 8.548 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006ZM5.205 5c-.625.626-.94 1.351-1.004 2.09a8.497 8.497 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107-.04.039Zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a2.835 2.835 0 0 0-.045-.283 3.078 3.078 0 0 0-.3-.041Z"/>
+                                                <path d="M7.009 12.139a7.632 7.632 0 0 1-1.804-1.352A7.568 7.568 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>
+                                            confim order
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                     <h5 class="modal-title">Billing Info</h5>
                                     <form id="billing-form">
@@ -123,7 +173,8 @@ $(document).ready(function(){
                                         </div>
                                         <div class="mb-1 d-flex flex-column">
                                             <label for="billing-add-1">Street Address</label>
-                                            <input id="billing-add-1" type="text" class="form-control" aria-label="billing-add-1" placeholder="Street Address">
+                                            <input id="billing-add-1" list="bill-lookup" type="text" class="form-control" aria-label="billing-add-1" placeholder="Street Address">
+                                            <datalist id="bill-lookup"></datalist>
                                             <p id="billing-add-1-error"></p>
                                         </div>
                                         <div class="mb-1 d-flex flex-column">
@@ -168,8 +219,8 @@ $(document).ready(function(){
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>Next</button>
+                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>Next</button>
                                 </div>
                             </div>
                         </div>
@@ -179,15 +230,40 @@ $(document).ready(function(){
                     <div class="modal modal-lg" id="shippingModal" aria-hidden="true" aria-labelledby="shippingModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header bg-success-subtle">
                                     <h5 class="modal-title">Checkout</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <button class="btn px-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
-                                        <button class="btn px-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
-                                        <button class="btn btn-primary px-4 ship" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
-                                        <button class="btn px-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>confim order</button>
+                                    <div class="d-flex flex-row justify-content-around justify-content-sm-center">
+                                        <button class="btn px-1 px-sm-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">
+                                            payment 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-piggy-bank" viewBox="0 0 16 16">
+                                                <path d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z"/>
+                                                <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal" disabled>
+                                            billing 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-success px-1 px-sm-4 shipping" data-bs-target="#shippingModal" data-bs-toggle="modal">
+                                            shipping
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+                                                <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362.798-.799.96-1.932.362-2.531-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532Z"/>
+                                                <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9.42 9.42 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a9.556 9.556 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093.067.017.12.033.16.045.184.06.279.13.351.295l.029.073a3.475 3.475 0 0 1 .157.721c.055.485.051 1.178-.159 2.065Zm-4.828 7.475.04-.04-.107 1.081a1.536 1.536 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a8.548 8.548 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006ZM5.205 5c-.625.626-.94 1.351-1.004 2.09a8.497 8.497 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107-.04.039Zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a2.835 2.835 0 0 0-.045-.283 3.078 3.078 0 0 0-.3-.041Z"/>
+                                                <path d="M7.009 12.139a7.632 7.632 0 0 1-1.804-1.352A7.568 7.568 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>
+                                            confim order
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                     <h5 class="modal-title">Shipping Info</h5>
                                     <input type="checkbox" id="same-as-billing" name="shipping-info" value="yes">
@@ -208,7 +284,8 @@ $(document).ready(function(){
                                             </div>
                                             <div class="mb-1 d-flex flex-column">
                                                 <label for="shipping-add-1">Street Address</label>
-                                                <input id="shipping-add-1" type="text" class="form-control" aria-label="shipping-add-1" placeholder="Street Address">
+                                                <input id="shipping-add-1" list="ship-lookup" type="text" class="form-control" aria-label="shipping-add-1" placeholder="Street Address">
+                                                <datalist id="ship-lookup"></datalist>
                                                 <p id="shipping-add-1-error"></p>
                                             </div>
                                             <div class="mb-1 d-flex flex-column">
@@ -240,22 +317,12 @@ $(document).ready(function(){
                                                     <p id="shipping-postal-error"></p>
                                                 </div>
                                             </div>
-                                            <div class="mb-1 d-flex flex-column">
-                                                <label for="shipping-email">Email Address</label>
-                                                <input id="shipping-email" type="text" class="form-control" aria-label="email" placeholder="Email Address">
-                                                <p id="shipping-email-error"></p>
-                                            </div>
-                                            <div class="mb-1 d-flex flex-column">
-                                                <label for="shipping-phone">Phone Number</label>
-                                                <input id="shipping-phone" type="text" class="form-control" aria-label="phone" placeholder="Phone Number">
-                                                <p id="shipping-phone-error"></p>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>Next</button>
+                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success order" data-bs-target="#confirmModal" data-bs-toggle="modal" disabled>Next</button>
                                 </div>
                             </div>
                         </div>
@@ -265,27 +332,74 @@ $(document).ready(function(){
                     <div class="modal modal-lg" id="confirmModal" aria-hidden="true" aria-labelledby="confirmModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header bg-success-subtle">
                                     <h5 class="modal-title">Checkout</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <button class="btn px-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">payment</button>
-                                        <button class="btn px-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal">billing</button>
-                                        <button class="btn px-4 ship" data-bs-target="#shippingModal" data-bs-toggle="modal">shipping</button>
-                                        <button class="btn btn-primary px-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal">confim order</button>
+                                    <div class="d-flex flex-row justify-content-around justify-content-sm-center">
+                                        <button class="btn px-1 px-sm-4 payment" data-bs-target="#paymentModal" data-bs-toggle="modal">
+                                            payment 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-piggy-bank" viewBox="0 0 16 16">
+                                                <path d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z"/>
+                                                <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 bill" data-bs-target="#billingModal" data-bs-toggle="modal" disabled>
+                                            billing 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn px-1 px-sm-4 shipping" data-bs-target="#shippingModal" data-bs-toggle="modal" disabled>
+                                            shipping
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+                                                <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362.798-.799.96-1.932.362-2.531-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532Z"/>
+                                                <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9.42 9.42 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a9.556 9.556 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093.067.017.12.033.16.045.184.06.279.13.351.295l.029.073a3.475 3.475 0 0 1 .157.721c.055.485.051 1.178-.159 2.065Zm-4.828 7.475.04-.04-.107 1.081a1.536 1.536 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a8.548 8.548 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006ZM5.205 5c-.625.626-.94 1.351-1.004 2.09a8.497 8.497 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107-.04.039Zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a2.835 2.835 0 0 0-.045-.283 3.078 3.078 0 0 0-.3-.041Z"/>
+                                                <path d="M7.009 12.139a7.632 7.632 0 0 1-1.804-1.352A7.568 7.568 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-success px-1 px-sm-4 order" data-bs-target="#confirmModal" data-bs-toggle="modal">
+                                            confim order
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                     <h5 class="modal-title">Confirm Order</h5>
                                     <table id="confirm-cart" class="table border-0"></table>
                                     <div>
                                         <p id="tax-rate"></p>
                                         <p id="name"></p>
-                                        <p id="shipping-add"></p>
+                                        <p id="shipping-add"></p>           
                                     </div>
+                                    <div id="errors"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary post"  data-bs-dismiss="modal">Confirm</button>
+                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                    <button id="post" class="btn btn-success">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="modal modal-lg" id="confirmMessage" aria-hidden="true" aria-labelledby="confirmMessage" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-success-subtle">
+                                    <h5 class="modal-title">Thank you for your order</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="modal-text">
+                                        Your Order has been confirmed and you will recieve a confirmation email shortly. 
+                                        If there are any issues with your order please contact us as soon as you can.
+                                        Thank you and enjoy the rest of your day
+                                    </p> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -302,7 +416,7 @@ $(document).ready(function(){
         $('#products').html('');
         for(let i = 0; i<prod.length; i++){
             $('#products').append(
-                `<div class="cart-div card col-10 ms-1 me-1 mt-2 mb-2">
+                `<div class="cart-div card col-10 ms-1 me-1 mt-2 mb-2 shadow-sm">
                     <img src="${prod[i].image}" class="card-img-top" alt="${prod[i].title}">
                     <div class="card-body">
                         <h5 class="card-title">${prod[i].title}</h5>
@@ -310,7 +424,7 @@ $(document).ready(function(){
                     </div>
                     <div class="card-footer d-flex flex-row border-0 bg-transparent">
                         <h5 id="${prod[i].id}-price" class="card-title me-auto price">${"$" + prod[i].price}</h5>
-                        <a id="${prod[i].id}" class="cart-btn btn btn-primary ms-auto">Add to Cart</a>
+                        <a id="${prod[i].id}" class="cart-btn btn btn-success ms-auto">Add to Cart</a>
                     </div>
                 </div>`);
         }
@@ -475,7 +589,7 @@ $(document).ready(function(){
             let cell3 = row.insertCell(2);
             let cell4 = row.insertCell(3);
             let cell5 = row.insertCell(4);
-            cell1.innerHTML = `<img class="confirm-img" src="${cart_list[i].image}">`
+            cell1.innerHTML = `<img class="confirm-img d-none d-sm-flex" src="${cart_list[i].image}" alt="img for item ${cart[cart_list[i].id]}">`
             cell2.innerHTML = cart_list[i].title;
             cell3.innerHTML = cart[cart_list[i].id];
             cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
@@ -623,7 +737,7 @@ $(document).ready(function(){
 
     let storeURL = 'https://fakestoreapi.com/products/?limit=12';
 
-    function moneyFetchCall(code){
+    async function moneyFetchCall(code){
         let moneyURL = `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/cad/${code}.json`;
         return fetch(moneyURL)
             .then(response => {
@@ -639,7 +753,7 @@ $(document).ready(function(){
                 if(code == 'gbp'){ return data.gbp};
                 })
             .catch((e) => {
-                console.log(e);
+                alert('Our money conversion system is currently down. We apologize for the inconvenience');
             });
     }
     
@@ -655,7 +769,6 @@ $(document).ready(function(){
         .then((data)=> {
             items = createItems(data);
             createCard(items);
-            //console.log($("html").html());    // remove this at the end but keep it for validation
         })
         .catch((e) => {
             let url = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/fakestoreapi.json';
@@ -724,7 +837,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#clear').on('click', function(){
+    function clear(){
         set_cookie("shopping_cart_items", null);
 
         cart_counter = 0;
@@ -733,6 +846,10 @@ $(document).ready(function(){
         $('#cart-items').html('');
         $('#clear').hide(); 
         $('#checkout').hide();
+    }
+
+    $('#clear').on('click', function(){
+        clear();
     });
 
     $('#checkout').on('click',function(){
@@ -871,7 +988,7 @@ $(document).ready(function(){
             // do nothing if one of the inputs is blanked
         } else {
             
-            let mm_pass = /^(0?[1-9]|1[0-2])$/;     // validation for month
+            let mm_pass = /^(0[1-9]|1[0-2])$/;     // validation for month
 
             // validation for year
             let curDate = new Date();
@@ -985,31 +1102,41 @@ $(document).ready(function(){
 
     // end of name validation //
 
+    function addRequest(val, inputID, outID){
+        var xmlhttp = new XMLHttpRequest();
+        var url = `https://geocoder.ca/?autocomplete=1&locate=${val}&geoit=xml&auth=test&json=1`;
+    
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let data = JSON.parse(this.responseText); 
+                $( inputID ).html('');
+                let streetList = Object.values(data.streets.street);
+                getAddress(streetList, outID); 
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+    function getAddress(streetList, id){
+        let dataList = document.querySelector( id );
+        let optionValues = streetList;
+
+        for( let optionValue of optionValues ){
+            let newOption = document.createElement( "option" );
+            newOption.value = optionValue;
+            dataList.appendChild(newOption);
+        }
+    }
 
     $('#billing-add-1').on('keypress change', function(){
-        function makereq(val){
-            var xmlhttp = new XMLHttpRequest();
-            var url = `https://geocoder.ca/?autocomplete=1&geoit=xml&auth=test&json=1&locate=${val}`;
-        
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    let worked = JSON.parse(this.responseText); 
-                    console.log(worked);
-                }
-            }
-            xmlhttp.open("GET", url, true);
-	        xmlhttp.send();
-        }
         let value = $('#billing-add-1').val();
-        makereq(value);
-
+        addRequest(value, "#billing-add-1", "#bill-lookup");
     });
-
 
     // start of address validation //
 
     let billAdd_check1 = false;
-    let billAdd_check2 = false;
     let billCity_check = false;
     let billCountry_check = false;
     let billProv_check = false;
@@ -1017,12 +1144,20 @@ $(document).ready(function(){
 
     $('#billing-add-1').on('change', function(){
         
-        let value = $('#billing-add-1').val();
+        let value = $('#billing-add-1').val().split(', ');
         let add_check = /\w+(\s\w+){2,}/;
 
+        if(value.length == 4){
+            $('#billing-add-1').val(value[0]);
+            $('#city').val(value[1]).trigger('change');
+            $('#province').val(value[2]).trigger('change');
+            $('#postal-code').val(value[3]).trigger('change');
+            $('#country').val('CA').trigger('change');
+        }
+        
         billAdd_check1 = false;
 
-        if(add_check.test(value)){
+        if(add_check.test(value[0])){
             $('#billing-add-1').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#billing-add-1-error').html('');
             billAdd_check1 = true;
@@ -1036,12 +1171,10 @@ $(document).ready(function(){
 
         let value = $('#billing-add-2').val();
         let add2_check = /^[a-zA-Z0-9 -.]*$/;
-        billAdd_check2 = false;
 
         if(add2_check.test(value)){
             $('#billing-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#billing-add-2-error').html('');
-            billAdd_check2 = true;
         } else {
             $('#billing-add-2').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#billing-add-2-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
@@ -1051,7 +1184,7 @@ $(document).ready(function(){
     $('#city').on('change', function(){
 
         let value = $('#city').val();
-        let city_check = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
+        let city_check = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
         billCity_check = false;
 
         if(city_check.test(value)){
@@ -1170,7 +1303,7 @@ $(document).ready(function(){
 
     $('#billing-form').on('change', function(){
 
-        if(billAdd_check1 && billAdd_check2 && billCity_check && billCountry_check && billProv_check && billPostal_check && billFirst_check && billLast_check && billPhone && billEmail){
+        if(billAdd_check1 && billCity_check && billCountry_check && billProv_check && billPostal_check && billFirst_check && billLast_check && billPhone && billEmail){
             $('.shipping').prop('disabled', false);
         } else {
             $('.shipping').attr('disabled', true);
@@ -1187,7 +1320,6 @@ $(document).ready(function(){
     let shipFirst_check = false;
     let shipLast_check = false;
     let shipAdd_check1 = false;
-    let shipAdd_check2 = false;
     let shipCity_check = false;
     let shipCountry_check = false;
     let shipProv_check = false;
@@ -1205,8 +1337,6 @@ $(document).ready(function(){
         let prov = $('#shipping-province');
         let country = $('#shipping-country');
         let postal = $('#shipping-postal-code');
-        let email = $('#shipping-email');
-        let phone = $('#shipping-phone');
 
         if(!$('#same-as-billing').is(':checked')){
             $('#hide-if-same').show(200);
@@ -1238,7 +1368,6 @@ $(document).ready(function(){
             shipFirst_check = false;
             shipLast_check = false;
             shipAdd_check1 = false;
-            shipAdd_check2 = false;
             shipCity_check = false;
             shipCountry_check = false;
             shipProv_check = false;
@@ -1295,25 +1424,35 @@ $(document).ready(function(){
             $('#shipping-last-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-last-name-error').html('');
             shipLast_check = true;
-            console.log(shipLast_check);
         } else {
             $('#shipping-last-name-error').html('Please enter a vaild last name without spaces').css('color','red').hide().show(200);
             $('#shipping-last-name').css('background-color', 'rgba(240,128,128, 0.25)');
-            console.log(last_value);
         }
     });
 
     // end of shipping name validation //
 
+    $('#shipping-add-1').on('keypress change', function(){
+        let value = $('#shipping-add-1').val();
+        addRequest(value, "#shipping-add-1", "#ship-lookup");
+    });
 
     $('#shipping-add-1').on('change', function(){
         
-        let value = $('#shipping-add-1').val();
+        let value = $('#shipping-add-1').val().split(', ');
         let add_check = /\w+(\s\w+){2,}/;
+
+        if(value.length == 4){
+            $('#shipping-add-1').val(value[0]);
+            $('#shipping-city').val(value[1]).trigger('change');
+            $('#shipping-province').val(value[2]).trigger('change');
+            $('#shipping-postal-code').val(value[3]).trigger('change');
+            $('#shipping-country').val('CA').trigger('change');
+        }
 
         shipAdd_check1 = false;
 
-        if(add_check.test(value)){
+        if(add_check.test(value[0])){
             $('#shipping-add-1').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-add-1-error').html('');
             shipAdd_check1 = true;
@@ -1328,12 +1467,9 @@ $(document).ready(function(){
         let value = $('#shipping-add-2').val();
         let add2_check = /^[a-zA-Z0-9 -.]*$/;
 
-        shipAdd_check2 = false;
-
         if(add2_check.test(value)){
             $('#shipping-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-add-2-error').html('');
-            shipAdd_check2 = true;
         } else {
             $('#shipping-add-2').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#shipping-add-2-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
@@ -1343,7 +1479,7 @@ $(document).ready(function(){
     $('#shipping-city').on('change', function(){
 
         let value = $('#shipping-city').val();
-        let city_check = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
+        let city_check = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
 
         shipCity_check = false;
 
@@ -1421,17 +1557,118 @@ $(document).ready(function(){
 
     $('#shipping-form').on('change', function(){
 
-        if(shipAdd_check1 && shipAdd_check2 && shipCity_check && shipCountry_check && shipProv_check && shipPostal_check && shipFirst_check && shipLast_check){
+        if(shipAdd_check1 && shipCity_check && shipCountry_check && shipProv_check && shipPostal_check && shipFirst_check && shipLast_check){
             $('.order').prop('disabled', false);
         } else {
             $('.order').attr('disabled', true);
         }
-        $('#name').html(`Order by ${$('#first-name').val()} ${$('#last-name').val()}`);
-        $('#shipping-add').html(`Order being sent to<br>${$('#shipping-add-1').val()}<br>${$('#shipping-add-2').val()}
+        $('#name').html(`Order by: ${$('#first-name').val()} ${$('#last-name').val()}`);
+        if($('#shipping-add-2').val() == ''){
+        $('#shipping-add').html(`Order being sent to:<br>${$('#shipping-add-1').val()}
                                 <br>${$('#shipping-city').val().charAt(0).toUpperCase() + $('#shipping-city').val().slice(1)}, 
                                 ${$('#shipping-province').val().toUpperCase()}, ${$('#shipping-country').val().toUpperCase()}
                                 , ${$('#shipping-postal-code').val().toUpperCase()}`);
+        } else {
+            $('#shipping-add').html(`Order being sent to:<br>${$('#shipping-add-1').val()}<br>${$('#shipping-add-2').val()}
+                                <br>${$('#shipping-city').val().charAt(0).toUpperCase() + $('#shipping-city').val().slice(1)}, 
+                                ${$('#shipping-province').val().toUpperCase()}, ${$('#shipping-country').val().toUpperCase()}
+                                , ${$('#shipping-postal-code').val().toUpperCase()}`);
+        }
         updateConfirmPrice();
     });
 
+    $('#post').on('click', function(){
+        let orderTotal = $('#confirm-total')[0].cells[1].innerHTML.split(' ')
+        let postTotal = parseFloat(orderTotal[1]);
+
+        let orderTax = $('#confirm-tax')[0].cells[1].innerHTML.split(' ');
+        let postTax = orderTax[1];
+
+        let submission_data = {  
+            card_number: $('#credit-card').val().replace(/\s/g, ''),
+            expiry_month:  $('#expire-month').val(),
+            expiry_year: $('#expire-year').val(),
+            security_code: $('#expire-num').val(),
+            amount: postTotal,
+            taxes: postTax,
+            shipping_amount: 15.00,
+            currency: $('#currency-type').val(),
+            items: get_cookie("shopping_cart_items"),
+            billing: {
+                first_name: $('#first-name').val(),
+                last_name: $('#last-name').val(),
+                address_1: $('#billing-add-1').val(),
+                address_2: $('#billing-add-2').val(),
+                city: $('#city').val(),
+                province: $('#province').val().toUpperCase(),
+                country: $('#country').val().toUpperCase(),
+                postal: $('#postal-code').val().toUpperCase(),
+                phone: $('#phone').val(),
+                email: $('#email').val()
+            },
+            shipping: {
+                first_name: $('#shipping-first-name').val(),
+                last_name: $('#shipping-last-name').val(),
+                address_1: $('#shipping-add-1').val(),
+                address_2: $('#billing-add-2').val(),
+                city: $('#shipping-city').val(),
+                province: $('#shipping-province').val().toUpperCase(),
+                country: $('#shipping-country').val().toUpperCase(),
+                postal: $('#shipping-postal-code').val().toUpperCase() 
+           }
+    };
+        let form_data = new FormData();
+        form_data.append('submission', JSON.stringify(submission_data));
+            
+
+        fetch('https://deepblue.camosun.bc.ca/~c0180354/ics128/final/', {
+            method: 'Post',
+            cache: 'no-cache',
+            body: form_data
+        }).then(response => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('processing server issue');
+        }).then(data => {
+            if(data.status == "SUCCESS"){
+                $('#errors').hide();
+                $('#confirmModal').modal('hide');
+                $('#confirmMessage').modal('show');
+                clear();
+                $('.offcanvas').offcanvas('hide');
+                $('input').each(function(){
+                    $(this).val('').css('background-color', 'revert');
+                    $('.bill').attr('disabled', true);
+                    $('.shipping').attr('disabled', true);
+                    $('.order').attr('disabled', true);
+                })
+            } else {
+                let errors = Object.keys(data.error);
+                let values = Object.values(data.error);
+                let errortext="";
+
+                for(let i = 0; i<errors.length; i++){
+                    if(errors[i] == "billing"){
+                        billErrors = Object.keys(data.error.billing);
+                        billValues = Object.values(data.error.billing);
+                        for(let i = 0; i < billErrors.length; i++){
+                            errortext += `<p>Billing Error: ${billValues[i]}</p>`
+                        }
+                    } else if (errors[i] == "shipping"){
+                        shipErrors = Object.keys(data.error.shipping);
+                        shipValues = Object.values(data.error.shipping);
+                        for(let i = 0; i < billErrors.length; i++){
+                            errortext += `<p>Shipping Error: ${billValues[i]}</p>`
+                        }
+                    } else {
+                        errortext += `<p>${errors[i]}: ${values[i]}</p>`
+                    }
+                }
+                throw new Error(errortext);
+            }
+        }).catch(e => {
+            $('#errors').show().html(e).css('color','red').hide().show(300);
+        });
+    });
 });
