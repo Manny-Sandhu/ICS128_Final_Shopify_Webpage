@@ -1,5 +1,5 @@
 let items; // golbal used for the list of catalog objects
-let cart_counter = 0;
+let cart_counter = 0; // counter for the number of items in the cart
 
 $(document).ready(function(){
     // set up initial html for dynamic page //
@@ -406,495 +406,54 @@ $(document).ready(function(){
                     </div>`
     );
 
-    // hides the checkout and clear button //
-    $('#clear').hide(); 
-    $('#checkout').hide();
-
-
-    // function for creating cards used in the fetch call //
-    function createCard(prod){
-        $('#products').html('');
-        for(let i = 0; i<prod.length; i++){
-            $('#products').append(
-                `<div class="cart-div card col-10 ms-1 me-1 mt-2 mb-2 shadow-sm">
-                    <img src="${prod[i].image}" class="card-img-top" alt="${prod[i].title}">
-                    <div class="card-body">
-                        <h5 class="card-title">${prod[i].title}</h5>
-                        <p class="card-text">${prod[i].description}</p>
-                    </div>
-                    <div class="card-footer d-flex flex-row border-0 bg-transparent">
-                        <h5 id="${prod[i].id}-price" class="card-title me-auto price">${"$" + prod[i].price}</h5>
-                        <a id="${prod[i].id}" class="cart-btn btn btn-success ms-auto">Add to Cart</a>
-                    </div>
-                </div>`);
-        }
-    }
-
-
-    // function for creating a list of catalog items that is placed in the items global //
-    function createItems(items){
-        let itemList = [];
-        for(let i = 0; i<items.length; i++){
-            curItem = new Catalog(items[i].category, items[i].description, items[i].id, items[i].image, items[i].price, items[i].rating.rate, items[i].title);
-            itemList.push(curItem);
-        }
-        return itemList;
-    }
-
-
-    // Function for setting the cart-items div //
-    function setCartList(cart){
-        let j = 1;
-        let cart_list = [];
-
-        for (let i = 0; i < items.length; i++){
-            let item = items[i];
-            if(cart[j] != undefined){
-                cart_list.push(item);
-            }
-            j++;
-        }
-        return cart_list;
-    }
-
-    // function for updating the cart number // 
-    function updateCartNumber(){
-        $('#cart-number').html(`&nbsp;${cart_counter}`);
-        if(cart_counter == 0){
-            $('#cart-number').hide(300);
-        } else {
-            $('#cart-number').hide().slideDown().show(300);
-        }
-    }
-
-    // function for setting the added to cart table //
-    function setCartTable(cart_list, cart, exchange){
-        let table = document.querySelector("#cart-items");
-        let totalPrice = 0;
-        table.innerHTML =`<tr>
-                            <th></td>
-                            <th>Item</td>
-                            <th>Quantity</td>
-                            <th>Price</td>
-                            <th>Total</td>
-                          </tr>`;
-
-        for(let i = 0; i < cart_list.length; i++){
-            let row = table.insertRow(-1);
-            row.setAttribute("id", cart_list[i].id + "-cart");
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            let cell3 = row.insertCell(2);
-            let cell4 = row.insertCell(3);
-            let cell5 = row.insertCell(4);
-            cell1.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash rm-cart-btn" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                                </svg>`
-            cell2.innerHTML = cart_list[i].title;
-            cell3.innerHTML = cart[cart_list[i].id];
-            cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
-            cell5.innerHTML = parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange).toFixed(2);
-            totalPrice += parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange);
-        }
-        let subTotal = table.insertRow(-1);
-        subTotal.setAttribute('id', 'subtotal');
-        let text = subTotal.insertCell(0);
-        let amount = subTotal.insertCell(1);
-        text.innerHTML = "Subtotal";
-        text.colSpan = 3;
-        if($('#currency-type').val() == 'gbp'){ amount.innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; } 
-        else {amount.innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;}
-        amount.colSpan = 2;
-    }
-
-    function calculateTax(){
-        let tax;
-        let value=$('#shipping-province').val().toUpperCase();
-
-        let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
-        let prov_check = /BC|AB|SK|ON|MB|QC|N[BSLTU]|NS|NL|PE|NU|YT|NY/;
-        if(state_check.test(value) || prov_check.test(value)){
-            if(prov_check.test(value)){
-                switch(value){
-                    case "BC":
-                        tax = 1.12;
-                        break;
-                    case "AB":
-                        tax = 1.05;
-                        break;
-                    case "SK":
-                        tax = 1.11;
-                        break;
-                    case "MB":
-                        tax = 1.12;
-                        break;  
-                    case "ON":
-                        tax = 1.13;
-                        break;
-                    case "QC":
-                        tax = 1.15;
-                        break;
-                    case "NB":
-                        tax = 1.15;
-                        break;
-                    case "NL":
-                        tax = 1.15;
-                        break;
-                    case "NS":
-                        tax = 1.15;
-                        break;
-                    case "NT":
-                        tax = 1.05;
-                        break;
-                    case "NU":
-                        tax = 1.05;
-                        break;
-                    case "PE":
-                        tax = 1.15;
-                        break;
-                    case "YT":
-                        tax = 1.05;
-                        break;
-                }
-                $('#tax-rate').hide();     
-            } else {
-                $('#tax-rate').html('*tax rate may vary from').show();
-                tax = 1.04;
-            }
-        }else {
-            $('#tax-rate').html('*tax has not been calculated yet').show();
-            tax = 1;
-        }
-        return tax;
-    }
-
-    function setConfirmTable(cart_list, cart, exchange){
-        let table = document.querySelector("#confirm-cart");
-        let tax = calculateTax();
-        let totalPrice = 0;
-        table.innerHTML =`<tr>
-                            <th></td>
-                            <th>Item</td>
-                            <th>Quantity</td>
-                            <th>Price</td>
-                            <th>Total</td>
-                          </tr>`;
-
-        for(let i = 0; i < cart_list.length; i++){
-            let row = table.insertRow(-1);
-            row.setAttribute("id", cart_list[i].id + "-confirm");
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            let cell3 = row.insertCell(2);
-            let cell4 = row.insertCell(3);
-            let cell5 = row.insertCell(4);
-            cell1.innerHTML = `<img class="confirm-img d-none d-sm-flex" src="${cart_list[i].image}" alt="img for item ${cart[cart_list[i].id]}">`
-            cell2.innerHTML = cart_list[i].title;
-            cell3.innerHTML = cart[cart_list[i].id];
-            cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
-            cell5.innerHTML = parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange).toFixed(2);
-            totalPrice += parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange);
-        }
-        let subTotal = table.insertRow(-1);
-        subTotal.setAttribute('id', 'confirm-subtotal');
-        let text = subTotal.insertCell(0);
-        let amount = subTotal.insertCell(1);
-        text.innerHTML = "Subtotal";
-        text.colSpan = 3;
-        if($('#currency-type').val() == 'gbp'){ amount.innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; } 
-        else {amount.innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;}
-        amount.colSpan = 2;
-
-        let shipping = table.insertRow(-1);
-        shipping.setAttribute('id', 'confirm-shipping');
-        let ship_text = shipping.insertCell(0);
-        let ship_amount = shipping.insertCell(1);
-        ship_text.innerHTML = "Shipping";
-        ship_text.colSpan = 3;
-        if($('#currency-type').val() == 'gbp'){ ship_amount.innerHTML = `&#163; ${15.00}`; } 
-        else {ship_amount.innerHTML = `$ ${15.00}`;}
-        ship_amount.colSpan = 2;
-
-        let taxTotal = table.insertRow(-1);
-        taxTotal.setAttribute('id', 'confirm-tax');
-        let tax_text = taxTotal.insertCell(0);
-        let tax_amount = taxTotal.insertCell(1);
-        tax_text.innerHTML = "Tax";
-        tax_text.colSpan = 3;
-        if($('#currency-type').val() == 'gbp'){ tax_amount.innerHTML = `&#163; ${parseFloat(totalPrice * (tax - 1)).toFixed(2)}`; } 
-        else {tax_amount.innerHTML = `$ ${totalPrice * (tax - 1).toFixed(2)}`;}
-        tax_amount.colSpan = 2;
-
-        let orderTotal = table.insertRow(-1);
-        orderTotal.setAttribute('id', 'confirm-total');
-        let order_text = orderTotal.insertCell(0);
-        let order_amount = orderTotal.insertCell(1);
-        order_text.innerHTML = "Order Total";
-        order_text.colSpan = 3;
-        if($('#currency-type').val() == 'gbp'){ order_amount.innerHTML = `&#163; ${parseFloat(totalPrice * (tax) + 15).toFixed(2)}`; } 
-        else {order_amount.innerHTML = `$ ${parseFloat(totalPrice * (tax) + 15).toFixed(2)}`;}
-        order_amount.colSpan = 2;
-    }
-
-    // function for updating the table in the the cart div //
-    async function setCart(cart){
-        let cart_list = setCartList(cart);
-
-        let exchange = await setPrice();
-
-        setCartTable(cart_list, cart, exchange);
-        setConfirmTable(cart_list, cart, exchange);
-
-        $('#clear').show(); 
-        $('#checkout').show();
-    }
-
-    function changePrice(rate){
-        let currency = $('#currency-type').val();
-        if(currency == 'gbp'){
-            for(let i = 0; i < items.length; i++){
-                $(`#${items[i].id}-price`).html(`<span>&#163;</span>${parseFloat(items[i].price * rate).toFixed(2)}`);
-            }
-        } else {
-            for(let i = 0; i < items.length; i++){
-                $(`#${items[i].id}-price`).html(`${"$" + parseFloat(items[i].price * rate).toFixed(2)}`);
-            }
-        }
-    }
-
-    async function setPrice(){
-        let currency = $('#currency-type').val();
-        let rate = await moneyFetchCall(currency);
-        return rate;
-    }
-
-    async function updatePrice(){
-        let exchange = await setPrice();
-        changePrice(exchange);
-    }
-
-    async function updateCartPrice(){
-        let exchange = await setPrice();
-        let totalPrice = 0;
-        $('#cart-items tr td:nth-child(4)').each(function(){
-            let this_id = $(this).parent().attr('id').split("-");
-            for(let i = 0; i < items.length; i++){
-                if(this_id[0] == items[i].id){
-                    $(this).empty().append(parseFloat(items[i].price * exchange).toFixed(2));
-                    let price_cell = parseFloat($(this).text());
-                    let quantity_cell = parseFloat($(this).prev().text());
-                    $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2));
-                    totalPrice += parseFloat(price_cell * quantity_cell);
-                }
-            }
-        });
-        $('#subtotal')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;
-        if($('#currency-type').val() == 'gbp'){ 
-            $('#subtotal')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; 
-        }
-    }
-
-    async function updateConfirmPrice(){
-        let exchange = await setPrice();
-        let tax = calculateTax();
-        let shipping = 15;
-        let totalPrice = 0;
-        $('#confirm-cart tr td:nth-child(4)').each(function(){
-            let this_id = $(this).parent().attr('id').split("-");
-            for(let i = 0; i < items.length; i++){
-                if(this_id[0] == items[i].id){
-                    $(this).empty().append(parseFloat(items[i].price * exchange).toFixed(2));
-                    let price_cell = parseFloat($(this).text());
-                    let quantity_cell = parseFloat($(this).prev().text());
-                    $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2));
-                    totalPrice += parseFloat(price_cell * quantity_cell);
-                }
-            }
-        });
-        $('#confirm-subtotal')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;
-        if($('#currency-type').val() == 'gbp'){ 
-            $('#confirm-subtotal')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; 
-        }
-
-        $('#confirm-shipping')[0].cells[1].innerHTML = `$ ${parseFloat(shipping * exchange).toFixed(2)}`;
-        if($('#currency-type').val() == 'gbp'){ 
-            $('#confirm-shipping')[0].cells[1].innerHTML = `&#163; ${parseFloat(shipping * exchange).toFixed(2)}`; 
-        }
-
-        $('#confirm-tax')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice * (tax - 1)).toFixed(2)}`;
-        if($('#currency-type').val() == 'gbp'){ 
-            $('#confirm-tax')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice * (tax - 1)).toFixed(2)}`; 
-        }
-
-        $('#confirm-total')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice * (tax) + shipping).toFixed(2)}`;
-        if($('#currency-type').val() == 'gbp'){ 
-            $('#confirm-total')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice * (tax) + shipping).toFixed(2)}`; 
-        }
-    }
-    
-    // fetch call from fake store api for cards and catlog items //
-
-    let storeURL = 'https://fakestoreapi.com/products/?limit=12';
-
-    async function moneyFetchCall(code){
-        let moneyURL = `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/cad/${code}.json`;
-        return fetch(moneyURL)
-            .then(response => {
-                if(response.ok){
-                    return response.json();
-                }
-                throw new Error('broken api');
-            })
-            .then((data)=> {
-                let code = $('#currency-type').val();
-                if(code == 'cad'){ return data.cad};
-                if(code == 'usd'){ return data.usd};
-                if(code == 'gbp'){ return data.gbp};
-                })
-            .catch((e) => {
-                alert('Our money conversion system is currently down. We apologize for the inconvenience');
-            });
-    }
-    
-    function storeFetchCall(url){
-        fetch(url)
-        .then(response => {
-            if(response.ok){
-                return response.json();
-            }
-            throw new Error('broken api');
-        }
-        )
-        .then((data)=> {
-            items = createItems(data);
-            createCard(items);
-        })
-        .catch((e) => {
-            let url = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/fakestoreapi.json';
-            storeFetchCall(url);
-        });
-    }
-    storeFetchCall(storeURL);
-
-    // makes sure there isnt anything in the shopping cart items cookie //
-    set_cookie("shopping_cart_items", null);
-
-    // on click for the add cart buttons //
-    $(document).on('click', '.cart-btn', function(){
-
-        var product_id = $(this).attr("id");
-
-        var cart_items = get_cookie("shopping_cart_items"); // get the data stored as a "cookie"
-        
-        // initialize the cart items if it returns null
-        if (cart_items === null) {
-            cart_items = {};
-        }
-        // make sure the object is defined;
-        if (cart_items[product_id] === undefined) {
-            cart_items[product_id] = 0;
-        }
-    
-        cart_items[product_id]++;
-    
-        set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage
-
-        cart_counter++;
-        updateCartNumber();
-        $('#cart-items').show();
-
-        setCart(cart_items);
-    });
-
-    $(document).on('click', '.rm-cart-btn', function(){
-        let product_id = $(this).closest("tr").attr("id");
-        let confirm_id = product_id.split("-");
-        confirm_id[0] += '-confirm';
-
-        let cart_row = document.getElementById(product_id);
-        let confirm_row = document.getElementById(confirm_id[0]);
-
-        cart_row.parentNode.removeChild(cart_row);
-        updateCartPrice();
-        confirm_row.parentNode.removeChild(confirm_row);
-        updateConfirmPrice();
-        if(cart_counter == 0){
-            // dont change cart number
-        } else {
-            cart_counter--;
-        }
-        updateCartNumber();
-
-        product_id = parseInt(product_id.split("-"));
-        var cart_items = get_cookie("shopping_cart_items");
-        cart_items[product_id] = undefined;
-        set_cookie("shopping_cart_items", cart_items);
-        if($("#cart-items tr").length == 2){
-            $('#cart-items').hide();
-            $('#clear').hide(); 
-            $('#checkout').hide();
-        }
-    });
-
-    function clear(){
-        set_cookie("shopping_cart_items", null);
-
-        cart_counter = 0;
-        updateCartNumber();
-
-        $('#cart-items').html('');
-        $('#clear').hide(); 
-        $('#checkout').hide();
-    }
-
+    // Clear the cart on click
     $('#clear').on('click', function(){
         clear();
     });
-
+   
+    // open the initial payment modal on click
     $('#checkout').on('click',function(){
         $('#paymentModal').modal('show').hide().fadeIn(300);
     });
 
+    // update the prices on value change
     $("#currency-type").change(function () {
-
         updatePrice();
-
         if($('tr td:nth-child(4)')[0] != undefined){
             updateCartPrice();
             updateConfirmPrice();
         }
-
     });
+   
 
     // start of validation code //
-
-
+   
+   
     // delete any non-numeric  to credit card info //   
     $('#credit-card, #expire-month, #expire-year, #expire-num').on('keypress change', function () {
         this.value = this.value.replace(/[^0-9\.]/g,'');  
     });
-
+   
     // add spaces between 4 continous characters only for credit card number // 
     $('#credit-card').on('keypress change', function () {
         $(this).val(function (index, value) {   
             return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');   // add spaces
         });
     });
-
+   
     
     // credit card number validation start //
-
+   
     let creditNum_check = false
     let expiryMM_check = false
     let expiryYY_check = false
     let expiryNum_check = false;
-
+   
     // globals needed for the 2 validation functions//
     let visa_pass = /^4[0-9]{12}(?:[0-9]{3})?$/
     let mc_pass = /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/
     let amex_pass = /^3[47][0-9]{13}$/
-
+   
     // if the input was incorrect delete the card number and make the background revert
     $('#credit-card').on('focusin', function(){
         let value = $('#credit-card').val().replace(/\s/g, '');
@@ -904,18 +463,18 @@ $(document).ready(function(){
             $('#credit-card').css('background-color','revert').val('');
         }
     });
-
+   
     // validate on focus out instead of change because it works better for this //
     $('#credit-card').on('change', function(){
-
+   
         let value = $('#credit-card').val().replace(/\s/g, '');
         
         let visa_fail = /^4111111111111110$/
         let mc_fail = /^5400000000001234$/
         let amex_fail = /^375987654321001$/
-
+   
         creditNum_check = false;
-
+   
         // error messages and card type change depending on what card type is used //
         if(visa_pass.test(value) || mc_pass.test(value) || amex_pass.test(value)){
             if(visa_pass.test(value)){
@@ -923,23 +482,23 @@ $(document).ready(function(){
                 $('#credit-card').css('background-color','rgba(152,251,152, 0.25)');
                 $('#credit-card-error').html('')
                 $('#credit-type').html('&nbsp;Visa');
-
+   
                 creditNum_check = true;
-
+   
                 // test for the fail case //
                 if(visa_fail.test(value)){
                     $('#credit-card-error').html('please check your visa number or enter a new credit card number').css('color','red').hide().show(200);
                     $('#credit-card').css('background-color','rgba(240,128,128, 0.25)');
                 }
-
+   
             } else if(mc_pass.test(value)){
             
                 $('#credit-card').css('background-color','rgba(152,251,152, 0.25)');
                 $('#credit-card-error').html('')
                 $('#credit-type').html('&nbsp;MasterCard');
-
+   
                 creditNum_check = true;
-
+   
                 // test for the fail case //
                 if(mc_fail.test(value)){
                     $('#credit-card-error').html('please check your mastercard number or enter a new credit card number').css('color','red').hide().show(200);
@@ -950,9 +509,9 @@ $(document).ready(function(){
                 $('#credit-card').css('background-color','rgba(152,251,152, 0.25)');
                 $('#credit-card-error').html('')
                 $('#credit-type').html('&nbsp;Amex');
-
+   
                 creditNum_check = true;
-
+   
                 // test for the fail case //
                 if(amex_fail.test(value)){
                     $('#credit-card-error').html('please check your amex number or enter a new credit card number').css('color','red').hide().show(200);
@@ -963,52 +522,52 @@ $(document).ready(function(){
             $('#credit-card-error').html('Sorry we dont recognize that card type please check the card or try a new one').css('color','red').hide().show(200);
             $('#credit-card').css('background-color','rgba(240,128,128, 0.25)');
         }
-
+   
     });
-
+   
     // credit card number validatin end //
-
-
+   
+   
     // expiry validation start //
-
+   
     // add max length to attribute to year and month // 
-
+   
     $('#expire-month').attr('maxlength', '2');
     $('#expire-year').attr('maxlength', '4');
-
+   
     $('#expire-month, #expire-year').on('change', function(){
-
+   
         let yy_value = $('#expire-year').val();
         let mm_value = $('#expire-month').val();
         
         expiryMM_check = false;
         expiryYY_check = false;
-
+   
         if(yy_value == '' || mm_value == ''){
             // do nothing if one of the inputs is blanked
         } else {
             
             let mm_pass = /^(0[1-9]|1[0-2])$/;     // validation for month
-
+   
             // validation for year
             let curDate = new Date();
             let cardDate = new Date(`${yy_value}-${mm_value}-1`);
-
+   
             // check month then year and then both //
             if(mm_pass.test(mm_value)){
-
+   
                 $('#expire-month').css('background-color', 'rgba(152,251,152, 0.25)');
                 $('#expire-error').html('');
-
+   
                 if(curDate.getFullYear() <= cardDate.getFullYear()){
-
+   
                     $('#expire-year').css('background-color', 'rgba(152,251,152, 0.25)');
                     $('#expire-error').html('');
-
+   
                     if(curDate < cardDate){
                         $('#expire-year, #expire-month').css('background-color', 'rgba(152,251,152, 0.25)');
                         $('#expire-error').html('');
-
+   
                         expiryMM_check = true;
                         expiryYY_check = true;
                     } else {
@@ -1025,21 +584,21 @@ $(document).ready(function(){
             }
         }
     });
-
+   
     // end of expiry validation //
-
-
+   
+   
     // start of cv number validation //
-
+   
     $('#expire-num').attr('maxlength', '3');
-
+   
     $('#expire-num').on('change', function(){
-
+   
         let value = $('#expire-num').val();
         let num_pass = /^[0-9]{3}$/
         
         expiryNum_check = false;
-
+   
         if(num_pass.test(value)){
             $('#expire-num').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#expire-num-error').html('');
@@ -1049,10 +608,11 @@ $(document).ready(function(){
             $('#expire-num-error').html('please enter the 3 numbers on the back of your card').css('color','red').hide().show(200);
         }
     });
-
+   
     // end of cv number validation //
-
-
+   
+   
+    // disable the billing tab if the payment tab hasnt been validated //
     $('#payment-form').on('change', function(){
         if(expiryMM_check && expiryYY_check && expiryNum_check && creditNum_check){
             $('.bill').prop('disabled', false);
@@ -1060,19 +620,20 @@ $(document).ready(function(){
             $('.bill').attr('disabled', true);
         }
     });
+   
 
     // start of name validation //
-
+   
     let billFirst_check = false;
     let billLast_check = false;
-
+   
     $('#first-name').on('change', function(){
-
+   
         let value = $('#first-name').val();
         let name_check = /^[a-zA-Z]+\-?[a-zA-Z]*[^\s\W0-9]$/;
-
+   
         billFirst_check = false;
-
+   
         if(name_check.test(value)){
             $('#first-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#first-name-error').html('');
@@ -1082,14 +643,14 @@ $(document).ready(function(){
             $('#first-name').css('background-color', 'rgba(240,128,128, 0.25)');
         }
     });
-
+   
     $('#last-name').on('change', function(){
-
+   
         let value = $('#last-name').val();
         let name_check = /^[a-zA-Z]+['-]?[a-zA-Z]*[^\s\W0-9]$/;
-
+   
         billLast_check = false;
-
+   
         if(name_check.test(value)){
             $('#last-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#last-name-error').html('');
@@ -1099,43 +660,18 @@ $(document).ready(function(){
             $('#last-name').css('background-color', 'rgba(240,128,128, 0.25)');
         }
     });
-
+   
     // end of name validation //
-
-    function addRequest(val, inputID, outID){
-        var xmlhttp = new XMLHttpRequest();
-        var url = `https://geocoder.ca/?autocomplete=1&locate=${val}&geoit=xml&auth=test&json=1`;
-    
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let data = JSON.parse(this.responseText); 
-                $( inputID ).html('');
-                let streetList = Object.values(data.streets.street);
-                getAddress(streetList, outID); 
-            }
-        }
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-    }
-
-    function getAddress(streetList, id){
-        let dataList = document.querySelector( id );
-        let optionValues = streetList;
-
-        for( let optionValue of optionValues ){
-            let newOption = document.createElement( "option" );
-            newOption.value = optionValue;
-            dataList.appendChild(newOption);
-        }
-    }
-
+   
+    // change the datalist for bill-add-1 on keypress //
     $('#billing-add-1').on('keypress change', function(){
         let value = $('#billing-add-1').val();
         addRequest(value, "#billing-add-1", "#bill-lookup");
     });
+   
 
     // start of address validation //
-
+   
     let billAdd_check1 = false;
     let billCity_check = false;
     let billCountry_check = false;
@@ -1144,9 +680,11 @@ $(document).ready(function(){
 
     $('#billing-add-1').on('change', function(){
         
+        // value will be seperated by commas if it was taken from the datalist //
         let value = $('#billing-add-1').val().split(', ');
         let add_check = /\w+(\s\w+){2,}/;
-
+   
+        // if a response from the datalist is used also validate the filled in fields //
         if(value.length == 4){
             $('#billing-add-1').val(value[0]);
             $('#city').val(value[1]).trigger('change');
@@ -1156,7 +694,7 @@ $(document).ready(function(){
         }
         
         billAdd_check1 = false;
-
+   
         if(add_check.test(value[0])){
             $('#billing-add-1').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#billing-add-1-error').html('');
@@ -1166,12 +704,12 @@ $(document).ready(function(){
             $('#billing-add-1-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
         }
     });
-
+   
     $('#billing-add-2').on('focusout', function(){
-
+   
         let value = $('#billing-add-2').val();
         let add2_check = /^[a-zA-Z0-9 -.]*$/;
-
+   
         if(add2_check.test(value)){
             $('#billing-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#billing-add-2-error').html('');
@@ -1180,13 +718,13 @@ $(document).ready(function(){
             $('#billing-add-2-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
         }
     });
-
+   
     $('#city').on('change', function(){
-
+   
         let value = $('#city').val();
         let city_check = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
         billCity_check = false;
-
+   
         if(city_check.test(value)){
             $('#city').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#city-error').html('');
@@ -1195,19 +733,19 @@ $(document).ready(function(){
             $('#city').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#city-error').html('Please make sure you entered a valid city').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#country').attr('maxlength', '2');
     $('#province').attr('maxlength', '2');
-
+   
     $('#province').on('change', function(){
-
+   
         let value = $('#province').val().toUpperCase();
         let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
         let prov_check = /BC|AB|SK|ON|MB|QC|N[BSLTU]|NS|NL|PE|NU|YT|NY/;
         billProv_check = false;
-
+   
         if(prov_check.test(value) || state_check.test(value)){
             $('#province').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#province-error').html('');
@@ -1216,15 +754,15 @@ $(document).ready(function(){
             $('#province').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#province-error').html('Please make sure you entered a valid province or state code').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#country').on('change', function(){
-
+   
         let value = $('#country').val().toUpperCase();
         let country_check = /CA|US/;
         billCountry_check = false;
-
+   
         if(country_check.test(value)){
             $('#country').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#country-error').html('');
@@ -1233,17 +771,17 @@ $(document).ready(function(){
             $('#country').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#country-error').html('Please enter either CA or US').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#postal-code').on('change', function(){
-
+   
         let value = $('#postal-code').val().toUpperCase();
         let postal_check = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/;
         let zip_check = /^[0-9]{5}(?:-[0-9]{4})?$/;
-
+   
         billPostal_check = false;
-
+   
         if(postal_check.test(value) || zip_check.test(value)){
             $('#postal-code').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#postal-error').html('');
@@ -1252,24 +790,24 @@ $(document).ready(function(){
             $('#postal-code').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#postal-error').html('Please enter a valid postal code').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     // end of address validation //
    
-
-    // start of perosonal information validation //
-
+   
+    // start of personal information validation //
+   
     let billEmail = false;
     let billPhone = false;
-
+   
     $('#email').on('change', function(){
-
+   
         let value = $('#email').val();
         let email_check = /^\w{2,256}\@\w+[/.]\w*/;
-
+   
         billEmail = false;
-
+   
         if(email_check.test(value)){
             $('#email').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#email-error').html('');
@@ -1278,16 +816,16 @@ $(document).ready(function(){
             $('#email').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#email-error').html('Please enter a vaild email').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#phone').on('change', function(){
-
+   
         let value = $('#phone').val();
         let phone_check = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$/;
-
+   
         billPhone = false;
-
+   
         if(phone_check.test(value)){
             $('#phone').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#phone-error').html('');
@@ -1296,13 +834,15 @@ $(document).ready(function(){
             $('#phone').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#phone-error').html('Please enter a valid phone number').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     // end of perosonal information validation //
+   
 
+    // disable the shipping tab if the billing tab hasnt been validated //
     $('#billing-form').on('change', function(){
-
+   
         if(billAdd_check1 && billCity_check && billCountry_check && billProv_check && billPostal_check && billFirst_check && billLast_check && billPhone && billEmail){
             $('.shipping').prop('disabled', false);
         } else {
@@ -1311,12 +851,12 @@ $(document).ready(function(){
         checked();
         updateConfirmPrice();
     });
-
+   
     // end of billing validation //
-
-
+   
+   
     // start of shipping validation //
-
+   
     let shipFirst_check = false;
     let shipLast_check = false;
     let shipAdd_check1 = false;
@@ -1326,7 +866,7 @@ $(document).ready(function(){
     let shipPostal_check = false;
     let shipEmail = false;
     let shipPhone = false;
-
+   
     // check if the same //
     function checked(){
         let fName = $('#shipping-first-name');
@@ -1337,34 +877,34 @@ $(document).ready(function(){
         let prov = $('#shipping-province');
         let country = $('#shipping-country');
         let postal = $('#shipping-postal-code');
-
+   
         if(!$('#same-as-billing').is(':checked')){
             $('#hide-if-same').show(200);
-
+   
             fName.val('').css('background-color', 'revert');
             $('#shipping-first-name-error').hide();
-
+   
             lName.val('').css('background-color', 'revert');
             $('#shipping-last-name-error').hide();
-
+   
             add1.val('').css('background-color', 'revert');
             $('#shipping-add-1-error').hide();
-
+   
             add2.val('').css('background-color', 'revert');
             $('#shipping-add-2-error').hide();
-
+   
             city.val('').css('background-color', 'revert');
             $('#shipping-city-error').hide();
-
+   
             prov.val('').css('background-color', 'revert');
             $('#shipping-province-error').hide();
-
+   
             country.val('').css('background-color', 'revert');
             $('#shipping-country-error').hide();
-
+   
             postal.val('').css('background-color', 'revert');
             $('#shipping-postal-error').hide();
-
+   
             shipFirst_check = false;
             shipLast_check = false;
             shipAdd_check1 = false;
@@ -1384,25 +924,25 @@ $(document).ready(function(){
             postal.val($('#postal-code').val()).trigger('change');
         }
     }
-
+   
     checked();
+
     $('#same-as-billing').on('click', function(){
         checked();
     });
+
     // end check if the same //
-
-
-    // start of shipping address validation //
-
+   
+   
     // shipping name validation //
-
+   
     $('#shipping-first-name').on('change', function(){
-
+   
         let value = $('#shipping-first-name').val();
         let name_check = /^[a-zA-Z]+\-?[a-zA-Z]*[^\s\W0-9]$/;
-
+   
         shipFirst_check = false;
-
+   
         if(name_check.test(value)){
             $('#shipping-first-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-first-name-error').html('');
@@ -1412,14 +952,14 @@ $(document).ready(function(){
             $('#shipping-first-name').css('background-color', 'rgba(240,128,128, 0.25)');
         }
     });
-
+   
     $('#shipping-last-name').on('change', function(){
-
+   
         let last_value = $('#shipping-last-name').val();
         let last_check = /^[a-zA-Z]+['-]?[a-zA-Z]*[^\s\W0-9]$/;
-
+   
         shipLast_check = false;
-
+   
         if(last_check.test(last_value)){
             $('#shipping-last-name').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-last-name-error').html('');
@@ -1429,19 +969,25 @@ $(document).ready(function(){
             $('#shipping-last-name').css('background-color', 'rgba(240,128,128, 0.25)');
         }
     });
-
+   
     // end of shipping name validation //
-
+   
     $('#shipping-add-1').on('keypress change', function(){
         let value = $('#shipping-add-1').val();
         addRequest(value, "#shipping-add-1", "#ship-lookup");
     });
+   
+
+    // start of shipping address validation //
 
     $('#shipping-add-1').on('change', function(){
         
+        
+        // value will be seperated by commas if it was taken from the datalist //
         let value = $('#shipping-add-1').val().split(', ');
         let add_check = /\w+(\s\w+){2,}/;
-
+   
+        // if a response from the datalist is used also validate the filled in fields //
         if(value.length == 4){
             $('#shipping-add-1').val(value[0]);
             $('#shipping-city').val(value[1]).trigger('change');
@@ -1449,9 +995,9 @@ $(document).ready(function(){
             $('#shipping-postal-code').val(value[3]).trigger('change');
             $('#shipping-country').val('CA').trigger('change');
         }
-
+   
         shipAdd_check1 = false;
-
+   
         if(add_check.test(value[0])){
             $('#shipping-add-1').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-add-1-error').html('');
@@ -1461,12 +1007,12 @@ $(document).ready(function(){
             $('#shipping-add-1-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
         }
     });
-
+   
     $('#shipping-add-2').on('focusout', function(){
-
+   
         let value = $('#shipping-add-2').val();
         let add2_check = /^[a-zA-Z0-9 -.]*$/;
-
+   
         if(add2_check.test(value)){
             $('#shipping-add-2').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-add-2-error').html('');
@@ -1475,14 +1021,14 @@ $(document).ready(function(){
             $('#shipping-add-2-error').html('Please make sure you entered a correct street number').css('color','red').hide().show(200);
         }
     });
-
+   
     $('#shipping-city').on('change', function(){
-
+   
         let value = $('#shipping-city').val();
         let city_check = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
-
+   
         shipCity_check = false;
-
+   
         if(city_check.test(value)){
             $('#shipping-city').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-city-error').html('');
@@ -1491,20 +1037,20 @@ $(document).ready(function(){
             $('#shipping-city').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#shipping-city-error').html('Please make sure you entered a valid city').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#shipping-country').attr('maxlength', '2');
     $('#shipping-province').attr('maxlength', '2');
-
+   
     $('#shipping-province').on('change', function(){
-
+   
         let value = $('#shipping-province').val().toUpperCase();
         let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
         let prov_check = /BC|AB|SK|ON|MB|QC|N[BSLTU]|NS|NL|PE|NU|YT|NY/;
-
+   
         shipProv_check = false;
-
+   
         if(prov_check.test(value) || state_check.test(value)){
             $('#shipping-province').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-province-error').html('');
@@ -1513,16 +1059,16 @@ $(document).ready(function(){
             $('#shipping-province').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#shipping-province-error').html('Please make sure you entered a valid province or state code').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#shipping-country').on('change', function(){
-
+   
         let value = $('#shipping-country').val().toUpperCase();
         let country_check = /CA|US/;
-
+   
         shipCountry_check = false;
-
+   
         if(country_check.test(value)){
             $('#shipping-country').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-country-error').html('');
@@ -1531,17 +1077,17 @@ $(document).ready(function(){
             $('#shipping-country').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#shipping-country-error').html('Please enter either CA or US').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     $('#shipping-postal-code').on('change', function(){
-
+   
         let value = $('#shipping-postal-code').val().toUpperCase();
         let postal_check = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/;
         let zip_check = /^[0-9]{5}(?:-[0-9]{4})?$/;
-
+   
         shipPostal_check = false;
-
+   
         if(postal_check.test(value) || zip_check.test(value)){
             $('#shipping-postal-code').css('background-color', 'rgba(152,251,152, 0.25)');
             $('#shipping-postal-error').html('');
@@ -1550,13 +1096,14 @@ $(document).ready(function(){
             $('#shipping-postal-code').css('background-color', 'rgba(240,128,128, 0.25)');
             $('#shipping-postal-error').html('Please a valid postal or zip code').css('color','red').hide().show(200);
         }
-
+   
     });
-
+   
     // end of address validation //
-
+   
+    // disable the order tab if the shipping tab hasnt been validated also update the values of the order tab to match the shipping tab//
     $('#shipping-form').on('change', function(){
-
+   
         if(shipAdd_check1 && shipCity_check && shipCountry_check && shipProv_check && shipPostal_check && shipFirst_check && shipLast_check){
             $('.order').prop('disabled', false);
         } else {
@@ -1576,14 +1123,15 @@ $(document).ready(function(){
         }
         updateConfirmPrice();
     });
-
+   
+    // on click for confirm to submit data to the camosun server //
     $('#post').on('click', function(){
         let orderTotal = $('#confirm-total')[0].cells[1].innerHTML.split(' ')
         let postTotal = parseFloat(orderTotal[1]);
-
+   
         let orderTax = $('#confirm-tax')[0].cells[1].innerHTML.split(' ');
         let postTax = orderTax[1];
-
+   
         let submission_data = {  
             card_number: $('#credit-card').val().replace(/\s/g, ''),
             expiry_month:  $('#expire-month').val(),
@@ -1616,59 +1164,561 @@ $(document).ready(function(){
                 country: $('#shipping-country').val().toUpperCase(),
                 postal: $('#shipping-postal-code').val().toUpperCase() 
            }
-    };
+        };
         let form_data = new FormData();
         form_data.append('submission', JSON.stringify(submission_data));
             
+        postCart(form_data);
+        
+    });
+});
 
-        fetch('https://deepblue.camosun.bc.ca/~c0180354/ics128/final/', {
-            method: 'Post',
-            cache: 'no-cache',
-            body: form_data
-        }).then(response => {
+// hides the checkout and clear button //
+$('#clear').hide(); 
+$('#checkout').hide();
+
+
+// function for creating cards used in the fetch call //
+function createCard(prod){
+    $('#products').html('');
+    for(let i = 0; i<prod.length; i++){
+        $('#products').append(
+            `<div class="cart-div card col-10 ms-1 me-1 mt-2 mb-2 shadow-sm">
+                <img src="${prod[i].image}" class="card-img-top" alt="${prod[i].title}">
+                <div class="card-body">
+                    <h5 class="card-title">${prod[i].title}</h5>
+                    <p class="card-text">${prod[i].description}</p>
+                </div>
+                <div class="card-footer d-flex flex-row border-0 bg-transparent">
+                    <h5 id="${prod[i].id}-price" class="card-title me-auto price">${"$" + prod[i].price}</h5>
+                    <a id="${prod[i].id}" class="cart-btn btn btn-success ms-auto">Add to Cart</a>
+                </div>
+            </div>`);
+    }
+}
+
+
+// function for creating a list of catalog items that is placed in the items global //
+function createItems(items){
+    let itemList = [];
+    for(let i = 0; i<items.length; i++){
+        curItem = new Catalog(items[i].category, items[i].description, items[i].id, items[i].image, items[i].price, items[i].rating.rate, items[i].title);
+        itemList.push(curItem);
+    }
+    return itemList;
+}
+
+
+// Function for setting the cart-items div //
+function setCartList(cart){
+    let j = 1;
+    let cart_list = [];
+
+    for (let i = 0; i < items.length; i++){
+        let item = items[i];
+        if(cart[j] != undefined){
+            cart_list.push(item);
+        }
+        j++;
+    }
+    return cart_list;
+}
+
+// function for updating the cart number // 
+function updateCartNumber(){
+    $('#cart-number').html(`&nbsp;${cart_counter}`);
+    if(cart_counter == 0){
+        $('#cart-number').hide(300);
+    } else {
+        $('#cart-number').hide().slideDown().show(300);
+    }
+}
+
+// function for setting the added to cart table //
+function setCartTable(cart_list, cart, exchange){
+    let table = document.querySelector("#cart-items");
+    let totalPrice = 0;
+    table.innerHTML =`<tr>
+                        <th></td>
+                        <th>Item</td>
+                        <th>Quantity</td>
+                        <th>Price</td>
+                        <th>Total</td>
+                    </tr>`;
+
+    for(let i = 0; i < cart_list.length; i++){
+        let row = table.insertRow(-1);
+        row.setAttribute("id", cart_list[i].id + "-cart");
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
+        cell1.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash rm-cart-btn" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                            </svg>`
+        cell2.innerHTML = cart_list[i].title;
+        cell3.innerHTML = cart[cart_list[i].id];
+        cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
+        cell5.innerHTML = parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange).toFixed(2);
+        totalPrice += parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange);
+    }
+    let subTotal = table.insertRow(-1);
+    subTotal.setAttribute('id', 'subtotal');
+    let text = subTotal.insertCell(0);
+    let amount = subTotal.insertCell(1);
+    text.innerHTML = "Subtotal";
+    text.colSpan = 3;
+    if($('#currency-type').val() == 'gbp'){ amount.innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; } 
+    else {amount.innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;}
+    amount.colSpan = 2;
+}
+
+// function for finding the current tax rate based on province. If they are paying from the states a general tax of 4% is added with with a message indicating tax may vary //
+function calculateTax(){
+    let tax;
+    let value=$('#shipping-province').val().toUpperCase();
+
+    let state_check =  /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/;
+    let prov_check = /BC|AB|SK|ON|MB|QC|N[BSLTU]|NS|NL|PE|NU|YT|NY/;
+    if(state_check.test(value) || prov_check.test(value)){
+        if(prov_check.test(value)){
+            switch(value){
+                case "BC":
+                    tax = 1.12;
+                    break;
+                case "AB":
+                    tax = 1.05;
+                    break;
+                case "SK":
+                    tax = 1.11;
+                    break;
+                case "MB":
+                    tax = 1.12;
+                    break;  
+                case "ON":
+                    tax = 1.13;
+                    break;
+                case "QC":
+                    tax = 1.15;
+                    break;
+                case "NB":
+                    tax = 1.15;
+                    break;
+                case "NL":
+                    tax = 1.15;
+                    break;
+                case "NS":
+                    tax = 1.15;
+                    break;
+                case "NT":
+                    tax = 1.05;
+                    break;
+                case "NU":
+                    tax = 1.05;
+                    break;
+                case "PE":
+                    tax = 1.15;
+                    break;
+                case "YT":
+                    tax = 1.05;
+                    break;
+            }
+            $('#tax-rate').hide();     
+        } else {
+            $('#tax-rate').html('*tax rate may vary from').show();
+            tax = 1.04;
+        }
+    }else {
+        $('#tax-rate').html('*tax has not been calculated yet').show();
+        tax = 1;
+    }
+    return tax;
+}
+
+// function for setting up the confirm-cart table //
+function setConfirmTable(cart_list, cart, exchange){
+    let table = document.querySelector("#confirm-cart");
+    let tax = calculateTax();
+    let totalPrice = 0;
+    table.innerHTML =`<tr>
+                        <th></td>
+                        <th>Item</td>
+                        <th>Quantity</td>
+                        <th>Price</td>
+                        <th>Total</td>
+                    </tr>`;
+
+    for(let i = 0; i < cart_list.length; i++){
+        let row = table.insertRow(-1);
+        row.setAttribute("id", cart_list[i].id + "-confirm");
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
+        cell1.innerHTML = `<img class="confirm-img d-none d-sm-flex" src="${cart_list[i].image}" alt="img for item ${cart[cart_list[i].id]}">`
+        cell2.innerHTML = cart_list[i].title;
+        cell3.innerHTML = cart[cart_list[i].id];
+        cell4.innerHTML = parseFloat(cart_list[i].price * exchange).toFixed(2);
+        cell5.innerHTML = parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange).toFixed(2);
+        totalPrice += parseFloat(cart_list[i].price * cart[cart_list[i].id] * exchange);
+    }
+
+    // add the subtotal row //
+    let subTotal = table.insertRow(-1);
+    subTotal.setAttribute('id', 'confirm-subtotal');
+    let text = subTotal.insertCell(0);
+    let amount = subTotal.insertCell(1);
+    text.innerHTML = "Subtotal";
+    text.colSpan = 3;
+    if($('#currency-type').val() == 'gbp'){ amount.innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; } 
+    else {amount.innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;}
+    amount.colSpan = 2;
+
+    // add the shipping row //
+    let shipping = table.insertRow(-1);
+    shipping.setAttribute('id', 'confirm-shipping');
+    let ship_text = shipping.insertCell(0);
+    let ship_amount = shipping.insertCell(1);
+    ship_text.innerHTML = "Shipping";
+    ship_text.colSpan = 3;
+    if($('#currency-type').val() == 'gbp'){ ship_amount.innerHTML = `&#163; ${15.00}`; } 
+    else {ship_amount.innerHTML = `$ ${15.00}`;}
+    ship_amount.colSpan = 2;
+
+    // add the tax row //
+    let taxTotal = table.insertRow(-1);
+    taxTotal.setAttribute('id', 'confirm-tax');
+    let tax_text = taxTotal.insertCell(0);
+    let tax_amount = taxTotal.insertCell(1);
+    tax_text.innerHTML = "Tax";
+    tax_text.colSpan = 3;
+    if($('#currency-type').val() == 'gbp'){ tax_amount.innerHTML = `&#163; ${parseFloat(totalPrice * (tax - 1)).toFixed(2)}`; } 
+    else {tax_amount.innerHTML = `$ ${totalPrice * (tax - 1).toFixed(2)}`;}
+    tax_amount.colSpan = 2;
+
+    // add the total row //
+    let orderTotal = table.insertRow(-1);
+    orderTotal.setAttribute('id', 'confirm-total');
+    let order_text = orderTotal.insertCell(0);
+    let order_amount = orderTotal.insertCell(1);
+    order_text.innerHTML = "Order Total";
+    order_text.colSpan = 3;
+    if($('#currency-type').val() == 'gbp'){ order_amount.innerHTML = `&#163; ${parseFloat(totalPrice * (tax) + 15).toFixed(2)}`; } 
+    else {order_amount.innerHTML = `$ ${parseFloat(totalPrice * (tax) + 15).toFixed(2)}`;}
+    order_amount.colSpan = 2;
+}
+
+// function for updating the table in the the cart div //
+async function setCart(cart){
+    let cart_list = setCartList(cart);
+
+    let exchange = await setPrice();
+
+    setCartTable(cart_list, cart, exchange);
+    setConfirmTable(cart_list, cart, exchange);
+
+    $('#clear').show(); 
+    $('#checkout').show();
+}
+
+// function that changes the price of the of all products based on exchange rate //
+function changePrice(rate){
+    let currency = $('#currency-type').val();
+    if(currency == 'gbp'){
+        for(let i = 0; i < items.length; i++){
+            $(`#${items[i].id}-price`).html(`<span>&#163;</span>${parseFloat(items[i].price * rate).toFixed(2)}`);
+        }
+    } else {
+        for(let i = 0; i < items.length; i++){
+            $(`#${items[i].id}-price`).html(`${"$" + parseFloat(items[i].price * rate).toFixed(2)}`);
+        }
+    }
+}
+
+// function that returns the exchange rate from the money fetch call //
+async function setPrice(){
+    let currency = $('#currency-type').val();
+    let rate = await moneyFetchCall(currency);
+    return rate;
+}
+
+// function that waits for setPrice before calling changePrice
+async function updatePrice(){
+    let exchange = await setPrice();
+    changePrice(exchange);
+}
+
+// function for updating the price of the checkout-cart table with the new exchange rate //
+async function updateCartPrice(){
+    let exchange = await setPrice();
+    let totalPrice = 0;
+    $('#cart-items tr td:nth-child(4)').each(function(){
+        let this_id = $(this).parent().attr('id').split("-");
+        for(let i = 0; i < items.length; i++){
+            if(this_id[0] == items[i].id){
+                $(this).empty().append(parseFloat(items[i].price * exchange).toFixed(2));
+                let price_cell = parseFloat($(this).text());
+                let quantity_cell = parseFloat($(this).prev().text());
+                $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2));
+                totalPrice += parseFloat(price_cell * quantity_cell);
+            }
+        }
+    });
+    $('#subtotal')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;
+    if($('#currency-type').val() == 'gbp'){ 
+        $('#subtotal')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; 
+    }
+}
+
+// function for updating the prices of the confirm-cart table //
+async function updateConfirmPrice(){
+    let exchange = await setPrice();
+    let tax = calculateTax();
+    let shipping = 15;  // consistent 15 dollars of shipping
+    let totalPrice = 0;
+    $('#confirm-cart tr td:nth-child(4)').each(function(){
+        let this_id = $(this).parent().attr('id').split("-");
+        for(let i = 0; i < items.length; i++){
+            if(this_id[0] == items[i].id){
+                $(this).empty().append(parseFloat(items[i].price * exchange).toFixed(2));
+                let price_cell = parseFloat($(this).text());
+                let quantity_cell = parseFloat($(this).prev().text());
+                $(this).next().empty().append(parseFloat(price_cell * quantity_cell).toFixed(2));
+                totalPrice += parseFloat(price_cell * quantity_cell);
+            }
+        }
+    });
+
+    // update the extra rows in this table with the new exchange rate //
+    $('#confirm-subtotal')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice).toFixed(2)}`;
+    if($('#currency-type').val() == 'gbp'){ 
+        $('#confirm-subtotal')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice).toFixed(2)}`; 
+    }
+
+    $('#confirm-shipping')[0].cells[1].innerHTML = `$ ${parseFloat(shipping * exchange).toFixed(2)}`;
+    if($('#currency-type').val() == 'gbp'){ 
+        $('#confirm-shipping')[0].cells[1].innerHTML = `&#163; ${parseFloat(shipping * exchange).toFixed(2)}`; 
+    }
+
+    $('#confirm-tax')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice * (tax - 1)).toFixed(2)}`;
+    if($('#currency-type').val() == 'gbp'){ 
+        $('#confirm-tax')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice * (tax - 1)).toFixed(2)}`; 
+    }
+
+    $('#confirm-total')[0].cells[1].innerHTML = `$ ${parseFloat(totalPrice * (tax) + shipping).toFixed(2)}`;
+    if($('#currency-type').val() == 'gbp'){ 
+        $('#confirm-total')[0].cells[1].innerHTML = `&#163; ${parseFloat(totalPrice * (tax) + shipping).toFixed(2)}`; 
+    }
+}
+
+// function for fetching the exchange rate //
+async function moneyFetchCall(code){
+    let moneyURL = `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/cad/${code}.json`;
+    return fetch(moneyURL)
+        .then(response => {
             if(response.ok){
                 return response.json();
             }
-            throw new Error('processing server issue');
-        }).then(data => {
-            if(data.status == "SUCCESS"){
-                $('#errors').hide();
-                $('#confirmModal').modal('hide');
-                $('#confirmMessage').modal('show');
-                clear();
-                $('.offcanvas').offcanvas('hide');
-                $('input').each(function(){
-                    $(this).val('').css('background-color', 'revert');
-                    $('.bill').attr('disabled', true);
-                    $('.shipping').attr('disabled', true);
-                    $('.order').attr('disabled', true);
-                })
-            } else {
-                let errors = Object.keys(data.error);
-                let values = Object.values(data.error);
-                let errortext="";
-
-                for(let i = 0; i<errors.length; i++){
-                    if(errors[i] == "billing"){
-                        billErrors = Object.keys(data.error.billing);
-                        billValues = Object.values(data.error.billing);
-                        for(let i = 0; i < billErrors.length; i++){
-                            errortext += `<p>Billing Error: ${billValues[i]}</p>`
-                        }
-                    } else if (errors[i] == "shipping"){
-                        shipErrors = Object.keys(data.error.shipping);
-                        shipValues = Object.values(data.error.shipping);
-                        for(let i = 0; i < billErrors.length; i++){
-                            errortext += `<p>Shipping Error: ${billValues[i]}</p>`
-                        }
-                    } else {
-                        errortext += `<p>${errors[i]}: ${values[i]}</p>`
-                    }
-                }
-                throw new Error(errortext);
-            }
-        }).catch(e => {
-            $('#errors').show().html(e).css('color','red').hide().show(300);
+            throw new Error('broken api');
+        })
+        .then((data)=> {
+            let code = $('#currency-type').val();
+            if(code == 'cad'){ return data.cad};
+            if(code == 'usd'){ return data.usd};
+            if(code == 'gbp'){ return data.gbp};
+            })
+        .catch((e) => {
+            alert('Our money conversion system is currently down. We apologize for the inconvenience');
         });
+}
+
+// fetch call from fake store api for cards and catlog items //
+let storeURL = 'https://fakestoreapi.com/products/?limit=12';
+
+// fetches for setting up the products //
+function storeFetchCall(url){
+    fetch(url)
+    .then(response => {
+        if(response.ok){
+            return response.json();
+        }
+        throw new Error('broken api');
+    }
+    )
+    .then((data)=> {
+        items = createItems(data);
+        createCard(items);
+    })
+    // call the function again if the initial url fails //
+    .catch((e) => {
+        let url = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/fakestoreapi.json';
+        storeFetchCall(url);
     });
+}
+// call the storeFetchCall initially //
+storeFetchCall(storeURL);
+
+// makes sure there isnt anything in the shopping cart items cookie //
+set_cookie("shopping_cart_items", null);
+
+// on click for the add cart buttons //
+$(document).on('click', '.cart-btn', function(){
+
+    var product_id = $(this).attr("id");
+
+    var cart_items = get_cookie("shopping_cart_items"); // get the data stored as a "cookie"
+    
+    // initialize the cart items if it returns null
+    if (cart_items === null) {
+        cart_items = {};
+    }
+    // make sure the object is defined;
+    if (cart_items[product_id] === undefined) {
+        cart_items[product_id] = 0;
+    }
+
+    cart_items[product_id]++;
+
+    set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage
+
+    cart_counter++;     // increase the cart counter and then update the number
+    updateCartNumber();
+    $('#cart-items').show();
+
+    setCart(cart_items);
 });
+
+// function for removing items individually from the cart //
+$(document).on('click', '.rm-cart-btn', function(){
+    // find the correct cart ids
+    let product_id = $(this).closest("tr").attr("id");
+    let confirm_id = product_id.split("-");
+    confirm_id[0] += '-confirm';
+
+    let cart_row = document.getElementById(product_id);
+    let confirm_row = document.getElementById(confirm_id[0]);
+
+    // remove the rows from both tables
+    cart_row.parentNode.removeChild(cart_row);
+    updateCartPrice();
+
+    confirm_row.parentNode.removeChild(confirm_row);
+    updateConfirmPrice();
+    
+    if(cart_counter == 0){
+        // dont change cart number
+    } else {
+        cart_counter--;     // decrease the cart counter and then update
+    }
+    updateCartNumber();
+
+    product_id = parseInt(product_id.split("-"));
+    var cart_items = get_cookie("shopping_cart_items");
+    cart_items[product_id] = undefined;
+    set_cookie("shopping_cart_items", cart_items);
+
+    // hide the cart buttons if there is nothing in the cart //
+    if($("#cart-items tr").length == 2){
+        $('#cart-items').hide();
+        $('#clear').hide(); 
+        $('#checkout').hide();
+    }
+});
+
+// function for emptying the cart //
+function clear(){
+     set_cookie("shopping_cart_items", null);
+
+     cart_counter = 0;
+     updateCartNumber();
+
+     $('#cart-items').html('');
+     $('#clear').hide(); 
+     $('#checkout').hide();
+}
+
+// function that calls the geocoder. Parameters are the typed value val, the id of the input element inputID, and the datalist element id outputID 
+function addRequest(val, inputID, outID){
+    var xmlhttp = new XMLHttpRequest();
+    var url = `https://geocoder.ca/?autocomplete=1&locate=${val}&geoit=xml&auth=test&json=1`;
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            let data = JSON.parse(this.responseText); 
+            $( inputID ).html('');
+            let streetList = Object.values(data.streets.street);
+            getAddress(streetList, outID); 
+        }
+    }
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+// function that is used to add the fetched addresses to a datalist
+function getAddress(streetList, id){
+    let dataList = document.querySelector( id );
+    let optionValues = streetList;
+
+    for( let optionValue of optionValues ){
+        let newOption = document.createElement( "option" );
+        newOption.value = optionValue;
+        dataList.appendChild(newOption);
+    }
+}
+
+// function for posting the submission to the camosun web server. Takes the formdata as a parameter //
+async function postCart(form_data){
+    return fetch('https://deepblue.camosun.bc.ca/~c0180354/ics128/final/', {
+        method: 'Post',
+        cache: 'no-cache',
+        body: form_data
+    }).then(response => {
+        if(response.ok){
+            return response.json();
+        }
+        throw new Error('processing server issue');     // error message if there is an issue with the camosun web server
+    }).then(data => {
+        if(data.status == "SUCCESS"){                   // resets all the necessary cart details and opens the final message modal 
+            $('#errors').hide();
+            $('#confirmModal').modal('hide');
+            $('#confirmMessage').modal('show');
+            clear();
+            $('.offcanvas').offcanvas('hide');
+            $('input').each(function(){
+                $(this).val('').css('background-color', 'revert');
+                $('.bill').attr('disabled', true);
+                $('.shipping').attr('disabled', true);
+                $('.order').attr('disabled', true);
+            });
+            $('#same-as-billing').prop('checked', false);
+        } else {
+            let errors = Object.keys(data.error);       // create keys and values using the error data and then iterate through them adding to errortext
+            let values = Object.values(data.error);
+            let errortext="";
+    
+            for(let i = 0; i<errors.length; i++){
+                if(errors[i] == "billing"){
+                    billErrors = Object.keys(data.error.billing);
+                    billValues = Object.values(data.error.billing);
+                    for(let i = 0; i < billErrors.length; i++){
+                        errortext += `<p>Billing Error: ${billValues[i]}</p>`
+                    }
+                } else if (errors[i] == "shipping"){
+                    shipErrors = Object.keys(data.error.shipping);
+                    shipValues = Object.values(data.error.shipping);
+                    for(let i = 0; i < billErrors.length; i++){
+                        errortext += `<p>Shipping Error: ${billValues[i]}</p>`
+                    }
+                } else {
+                    errortext += `<p>${errors[i]}: ${values[i]}</p>`
+                }
+            }
+            throw new Error(errortext);             // throw the errortext
+        }
+    }).catch(e => {
+        $('#errors').show().html(e).css('color','red').hide().show(300);    // display errors underneath the confirm cart
+    });
+}
