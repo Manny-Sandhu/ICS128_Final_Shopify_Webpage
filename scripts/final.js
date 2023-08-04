@@ -399,7 +399,7 @@ $(document).ready(function(){
                                     </p> 
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success" data-bs-dismiss="modal">OK</button>
                                 </div>
                             </div>
                         </div>
