@@ -1,44 +1,26 @@
-#products img{
+#products img{          /* makes images consistent in the products cards */
     aspect-ratio: 1/1;
     object-fit: scale-down;
     width: 100%;
 }
 
-#cart-items{
-    list-style: none;
-    padding-inline-start: 0px;
-    
-}
+#cart-items svg {cursor: pointer;} /* makes the cursor better indicate the remove button is clickable */
 
-#cart-items img{
-    aspect-ratio: 1/1;
-    object-fit: scale-down;
-    width: 80%;
-}
+.modal-header{ justify-content: center; } /* center the modal headers */
 
-#cart-items .card-body{
-    padding: 0px;
-}
+#paymentModal .input-group-text { border-radius: 5px 0 0 5px;} /* match the credit card border radius */
 
-.modal-header{
-    justify-content: center;
-}
+#credit-card {border-radius: 0 5px 5px 0; } /* match the input groups border radius */
 
-#paymentModal .input-group-text {
-    border-radius: 5px 0 0 5px;
-}
-
-#credit-card {
-    border-radius: 0 5px 5px 0;
-}
-
-.confirm-img{
+.confirm-img{           /* keep the confirm cart items image consistent */
     aspect-ratio: 1/1;
     object-fit: scale-down;
     width: 30%;
 }
 
 #shopping {
-    margin-top: 50px;
-    background-image: url('../assets/leaves.webp');
+    margin-top: 50px;   /* add some margin so the sticky header isnt covering anything important */
+    background-image: url('../assets/leaves.webp'); /* main background image for catalog */
 }
+
+.container-fluid{--bs-gutter-x:0;} /* updates the bootstrap variable to better work with the page */

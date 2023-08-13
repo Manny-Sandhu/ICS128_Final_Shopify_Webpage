@@ -444,6 +444,7 @@ $(document).ready(function(){
     
     // credit card number validation start //
    
+    // globals for checking if the validation passed //
     let creditNum_check = false
     let expiryMM_check = false
     let expiryYY_check = false
@@ -530,8 +531,7 @@ $(document).ready(function(){
    
     // expiry validation start //
    
-    // add max length to attribute to year and month // 
-   
+    // add max length attribute to year and month // 
     $('#expire-month').attr('maxlength', '2');
     $('#expire-year').attr('maxlength', '4');
    
@@ -624,6 +624,7 @@ $(document).ready(function(){
 
     // start of name validation //
    
+    // globals for validation checks // 
     let billFirst_check = false;
     let billLast_check = false;
    
@@ -672,6 +673,7 @@ $(document).ready(function(){
 
     // start of address validation //
    
+    // globals for validation checks //
     let billAdd_check1 = false;
     let billCity_check = false;
     let billCountry_check = false;
@@ -736,6 +738,7 @@ $(document).ready(function(){
    
     });
    
+    // add a max length attribute to country and province //
     $('#country').attr('maxlength', '2');
     $('#province').attr('maxlength', '2');
    
@@ -798,6 +801,7 @@ $(document).ready(function(){
    
     // start of personal information validation //
    
+    // globals for validation checks //
     let billEmail = false;
     let billPhone = false;
    
@@ -857,6 +861,7 @@ $(document).ready(function(){
    
     // start of shipping validation //
    
+    // globals for validation checks //
     let shipFirst_check = false;
     let shipLast_check = false;
     let shipAdd_check1 = false;
@@ -864,10 +869,8 @@ $(document).ready(function(){
     let shipCountry_check = false;
     let shipProv_check = false;
     let shipPostal_check = false;
-    let shipEmail = false;
-    let shipPhone = false;
    
-    // check if the same //
+    // function to set the shipping address values when check box is checked //
     function checked(){
         let fName = $('#shipping-first-name');
         let lName = $('#shipping-last-name');
@@ -878,6 +881,7 @@ $(document).ready(function(){
         let country = $('#shipping-country');
         let postal = $('#shipping-postal-code');
    
+        // reset the values to their original value //
         if(!$('#same-as-billing').is(':checked')){
             $('#hide-if-same').show(200);
    
@@ -912,6 +916,8 @@ $(document).ready(function(){
             shipCountry_check = false;
             shipProv_check = false;
             shipPostal_check = false;
+            $('.order').prop('disabled', true);
+        // set the values the same as the billing and then validates them//
         } else {
             $('#hide-if-same').hide();
             fName.val($('#first-name').val()).trigger('change');
@@ -1126,9 +1132,10 @@ $(document).ready(function(){
    
     // on click for confirm to submit data to the camosun server //
     $('#post').on('click', function(){
+        // remove the $ from the cell before passing it into submission data
         let orderTotal = $('#confirm-total')[0].cells[1].innerHTML.split(' ')
         let postTotal = parseFloat(orderTotal[1]);
-   
+        // remove the $ from the cell before passing it into submission data
         let orderTax = $('#confirm-tax')[0].cells[1].innerHTML.split(' ');
         let postTax = orderTax[1];
    
@@ -1139,7 +1146,7 @@ $(document).ready(function(){
             security_code: $('#expire-num').val(),
             amount: postTotal,
             taxes: postTax,
-            shipping_amount: 15.00,
+            shipping_amount: 15.00, // shipping value is always 15 dollars
             currency: $('#currency-type').val(),
             items: get_cookie("shopping_cart_items"),
             billing: {
@@ -1254,7 +1261,7 @@ function setCartTable(cart_list, cart, exchange){
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
         let cell5 = row.insertCell(4);
-        cell1.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash rm-cart-btn" viewBox="0 0 16 16">
+        cell1.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-success rm-cart-btn" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
                             </svg>`

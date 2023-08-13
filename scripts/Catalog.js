@@ -1,14 +1,16 @@
+// Catalog class that is used to keep track of catalog items //
 class Catalog {
     constructor(category, description, id, image, price, rating, title){
         this.category = category;
         this.description = description;
         this.id = id;
         this.image = image;
-        this.price = parseFloat(price).toFixed(2);
+        this.price = parseFloat(price).toFixed(2);  // keeps the price consistent
         this.rating = rating;
         this.title = title;
     }
 
+    // start of setters and getters //
     get curCategory(){         
         return this._category;
     }
@@ -57,4 +59,5 @@ class Catalog {
     set newTitle(val){       
         this._title = val;
     }
+    // end of setters and getters //
 }
